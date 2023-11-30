@@ -1,0 +1,6 @@
+venv
+.idea
+__pycache__
+.flake8
+.pre-commit-config.yaml
+black_conf.toml
