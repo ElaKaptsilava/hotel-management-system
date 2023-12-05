@@ -9,4 +9,4 @@ router.register(r'hotels', hotel_views.HotelModelViewSet, basename='hotels')
 router.register(r'locations', hotel_views.LocationModelViewSet, basename='locations')
 router.register(r'rooms', hotel_views.RoomModelViewSet, basename='rooms')
 
-router.register(r'bookings', booking_views.BookingModelViewSet, basename='bookings')
+router.register(r'bookings', booking_views.CreateBookingModelViewSet, basename='bookings')
