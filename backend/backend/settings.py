@@ -47,6 +47,9 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'django_filters',
+    'phonenumber_field',
+
+    'hotel_management'
 
 ]
 
