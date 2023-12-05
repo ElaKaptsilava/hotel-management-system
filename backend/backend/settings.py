@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'django_filters',
     'phonenumber_field',
 
-    'hotel_management'
+    'hotel_management',
+    'reservation',
 
 ]
 
