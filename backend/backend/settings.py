@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'phonenumber_field',
-
+    # local apps
     'hotel_management',
     'reservation',
 
@@ -156,3 +156,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CELERY_BROKER_URL = os.environ.get("BROKER_URL", "redis://localhost:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("RESULT_BACKEND", "redis://localhost:6379/0")
+
+
+DATE_INPUT_FORMATS = ["Y-m-d"]

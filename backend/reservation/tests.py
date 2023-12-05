@@ -15,9 +15,9 @@ class BookingApiTestCase(APITestCase):
         self.room1 = hotel_models.Room.objects.create(room_number=1, prise_per_day=1.00, hotel=self.hotel1)
 
     def test_created_reservation(self):
-        response = self.client(reverse('bookings-list'), json.dumps({"check_in": '05/12/2023',
-                                                                     "check_out": '06/12/2023',
-                                                                     "rooms": self.room1}),
-                               content_type="application/json")
+        self.self_client = self.client(reverse('bookings-users-list'), json.dumps(
+            {"check_in": '05/12/2023', "check_out": '06/12/2023', "rooms": self.room1}),
+                                       content_type="application/json")
+        response = self.self_client
 
         self.assertEqual(response.data, '')

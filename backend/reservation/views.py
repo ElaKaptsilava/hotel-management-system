@@ -1,16 +1,14 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, mixins
-from rest_framework.viewsets import GenericViewSet
 
 from .models import Booking
 from .serializers import BookingModelSerializer
 from hotel_management import permissions as hotel_permissions
 
 
-class CreateBookingModelViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, GenericViewSet):
+class CreateBookingModelViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingModelSerializer
-    filter_backends = [DjangoFilterBackend]
     permission_classes = [permissions.IsAuthenticated]
 
 

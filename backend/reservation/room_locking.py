@@ -1,7 +1,6 @@
 """
 Mechanism for blocking rooms during the reservation period.
 """
-from hotel_management import models as hotel_models
 
 
 class RoomLocking:
@@ -16,4 +15,4 @@ class RoomLocking:
     def set_as_reserved(room):
         room.status = 'Reserved'
         room.save()
-        return room
+        return True
