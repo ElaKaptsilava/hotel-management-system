@@ -2,20 +2,27 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
 
-class Hotel(models.Model):
+class ModelsManager(models.Model):
+    objects = models.Manager()
+
+    class Meta:
+        abstract = True
+
+
+class Hotel(ModelsManager):
     name = models.CharField(max_length=250)
     location = models.OneToOneField('Location', on_delete=models.CASCADE)
     description = models.TextField()
 
 
-class Location(models.Model):
+class Location(ModelsManager):
     city = models.CharField(max_length=250)
     country = models.CharField(max_length=250)
     street = models.CharField(max_length=250)
     state = models.CharField(max_length=250)
 
 
-class Room(models.Model):
+class Room(ModelsManager):
     class Status(models.TextChoices):
         available = 'Available'
         not_available = 'NotAvailable'
