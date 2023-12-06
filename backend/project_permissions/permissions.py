@@ -1,9 +1,14 @@
 from rest_framework import permissions
 
-from rest_framework import permissions
-
 
 class CustomPermission(permissions.BasePermission):
+    """
+    Custom permission to allow:
+    1. Author of an object to edit it
+    2. All users can get list an object's
+    3. Authenticated user can create object.
+    """
+
     def has_permission(self, request, view):
         if view.action == "list":
             return True
@@ -11,8 +16,7 @@ class CustomPermission(permissions.BasePermission):
             return request.user.is_authenticated()
         elif view.action in ["retrieve", "update", "partial_update", "destroy"]:
             return False
-        else:
-            return False
+        return False
 
     def has_object_permission(self, request, view, obj):
         if not request.user.is_authenticated():
