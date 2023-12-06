@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "0.0.0.0"]
 if os.environ.get("ALLOWED_HOSTS") is not None:
     try:
         ALLOWED_HOSTS += os.environ.get("ALLOWED_HOSTS").split(",")
-    except Exception as e:
+    except Exception:
         print("Cant set ALLOWED_HOSTS, using default instead")
 
 # Application definition
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # local apps
     "hotel_management",
     "booking",
+    "reviews",
 ]
 
 MIDDLEWARE = [
