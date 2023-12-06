@@ -11,7 +11,7 @@ class ModelsManager(models.Model):
 
 class Hotel(ModelsManager):
     name = models.CharField(max_length=250)
-    location = models.OneToOneField('Location', on_delete=models.CASCADE)
+    location = models.OneToOneField("Location", on_delete=models.CASCADE)
     description = models.TextField()
 
 
@@ -24,13 +24,15 @@ class Location(ModelsManager):
 
 class Room(ModelsManager):
     class Status(models.TextChoices):
-        available = 'Available'
-        not_available = 'NotAvailable'
-        reserved = 'Reserved'
-        occupied = 'Occupied'
+        available = "Available"
+        not_available = "NotAvailable"
+        reserved = "Reserved"
+        occupied = "Occupied"
 
     room_number = models.IntegerField(unique=True)
-    status = models.CharField(max_length=15, choices=Status.choices, default=Status.available)
+    status = models.CharField(
+        max_length=15, choices=Status.choices, default=Status.available
+    )
     prise_per_day = models.DecimalField(max_digits=5, decimal_places=2)
     phone_number = PhoneNumberField(blank=True)
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)

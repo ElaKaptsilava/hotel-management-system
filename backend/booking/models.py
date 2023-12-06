@@ -13,10 +13,12 @@ class ModelsManager(models.Model):
 
 class Booking(ModelsManager):
     class Status(models.TextChoices):
-        reserved = 'Reserved'
-        canceled = 'Canceled'
+        reserved = "Reserved"
+        canceled = "Canceled"
 
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.reserved)
+    status = models.CharField(
+        max_length=20, choices=Status.choices, default=Status.reserved
+    )
     check_in = models.DateField(default=timezone.now)
     check_out = models.DateField(default=timezone.now)
     room = models.ForeignKey(hotel_models.Room, on_delete=models.CASCADE)
