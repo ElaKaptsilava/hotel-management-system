@@ -1,5 +1,3 @@
-import uuid
-
 from rest_framework import serializers
 
 from .models import Booking
@@ -14,13 +12,11 @@ class BookingModelSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         room_locking = RoomLocking()
-        reserved_room = room_locking.is_available(room=data.get('rooms'))
+        reserved_room = room_locking.is_available(room=data.get('room'))
         if not reserved_room:
             return serializers.ValidationError('This room already occupied.')
         return data
 
     def create(self, validated_data):
-        return Booking.objects.create(status='Reserved',
-                                      check_in=validated_data.get('check_in'),
-                                      check_out=validated_data.get('check_out'),
-                                      rooms=validated_data.get('rooms'))
+        return Booking.objects.create(**validated_data)
+

@@ -21,5 +21,5 @@ from booking.api import router as booking_router
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hotel-management/', include(hotel_router.urls)),
-    path('booking/', include(booking_router.urls)),
+    path('bookings/', include(booking_router.urls)),
 ]
