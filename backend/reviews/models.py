@@ -1,7 +1,7 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
-from hotel_management.models import Hotel, Room
+from hotel_management import models as hotel_models
 
 
 class Review(models.Model):
@@ -15,8 +15,8 @@ class Review(models.Model):
 
 
 class HotelReview(Review):
-    hotel = models.ForeignKey(Hotel, models.CASCADE)
+    hotel = models.ForeignKey(hotel_models.Hotel, on_delete=models.CASCADE)
 
 
 class RoomReview(Review):
-    hotel = models.ForeignKey(Room, models.CASCADE)
+    room = models.ForeignKey(hotel_models.Room, on_delete=models.CASCADE)
