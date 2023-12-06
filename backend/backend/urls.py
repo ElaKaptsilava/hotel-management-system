@@ -16,10 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from hotel_management.api import router as hotel_router
-from reservation.api import router as booking_router
+from booking.api import router as booking_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hotel-management/', include(hotel_router.urls)),
-    path('reservation/', include(booking_router.urls)),
+    path('booking/', include(booking_router.urls)),
 ]

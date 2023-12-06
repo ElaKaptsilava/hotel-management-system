@@ -10,7 +10,7 @@ class BookingModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = '__all__'
-        read_only_fields = ['status', 'reservation_id']
+        read_only_fields = ['status']
 
     def validate(self, data):
         room_locking = RoomLocking()
@@ -20,11 +20,7 @@ class BookingModelSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        reservation_id = uuid.uuid4()
-        while Booking.objects.filter(reservation_id=reservation_id):
-            reservation_id = uuid.uuid4()
-        return Booking.objects.create(reservation_id=reservation_id,
-                                      status='Reserved',
+        return Booking.objects.create(status='Reserved',
                                       check_in=validated_data.get('check_in'),
                                       check_out=validated_data.get('check_out'),
                                       rooms=validated_data.get('rooms'))
