@@ -1,21 +1,21 @@
-django
-djangorestframework
-djangorestframework-simplejwt
+django==5.0
+djangorestframework~=3.14.0
+djangorestframework-simplejwt==5.3.1
 
-requests
-responses
-markdown
-django-filter
+requests~=2.31.0
+responses~=0.24.1
+markdown~=3.5.1
+django-filter==23.5
 django-environ
 
-celery[redis]
+celery[redis]~=5.3.6
 
 psycopg2-binary
 
 drf-spectacular
 pre-commit
-flake8
-black
+flake8~=6.1.0
+black~=23.11.0
 
-pytest
+pytest~=7.4.3
 django-phonenumber-field[phonenumberslite]
