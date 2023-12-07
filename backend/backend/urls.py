@@ -18,6 +18,7 @@ from django.urls import path, include
 from hotel_management.api import router as hotel_router
 from booking.api import router as booking_router
 from reviews.api import router as reviews_router
+from discounts.api import router as discounts_router
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -41,6 +42,7 @@ urlpatterns = [
     path("hotel-management/", include(hotel_router.urls)),
     path("bookings/", include(booking_router.urls)),
     path("reviews/", include(reviews_router.urls)),
+    path("discounts_management/", include(discounts_router.urls)),
     # JWT token views
     path("token/", TokenObtainPairView.as_view(), name="token"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),

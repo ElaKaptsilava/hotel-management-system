@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, mixins, status
 from rest_framework.response import Response
+from rest_framework_simplejwt import authentication
 
 from .models import Booking
 from .serializers import BookingModelSerializer
@@ -13,6 +14,7 @@ class CreateBookingModelViewSet(
     queryset = Booking.objects.all()
     serializer_class = BookingModelSerializer
     permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [authentication.JWTAuthentication]
 
 
 class BookingModelViewSet(viewsets.ModelViewSet):
@@ -20,6 +22,7 @@ class BookingModelViewSet(viewsets.ModelViewSet):
     serializer_class = BookingModelSerializer
     filter_backends = [DjangoFilterBackend]
     permission_classes = [permissions.IsAdminUser]
+    authentication_classes = [authentication.JWTAuthentication]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

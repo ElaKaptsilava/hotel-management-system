@@ -8,6 +8,7 @@ from .serializers import (
 )
 from .filters import RoomFilters
 from project_permissions import permissions as project_permissions
+from rest_framework_simplejwt import authentication
 
 from rest_framework import viewsets
 
