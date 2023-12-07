@@ -21,4 +21,4 @@ class Booking(ModelsManager):
     )
     check_in = models.DateField(default=timezone.now)
     check_out = models.DateField(default=timezone.now)
-    room = models.ForeignKey(hotel_models.Room, on_delete=models.CASCADE)
+    room = models.ForeignKey(hotel_models.Room, on_delete=models.CASCADE, null=True)

@@ -12,10 +12,18 @@ class BookingModelSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         room_locking = RoomLocking()
-        reserved_room = room_locking.is_available(room=data.get("room"))
-        if not reserved_room:
-            return serializers.ValidationError("This room already occupied.")
+        is_reserved_room = room_locking.is_available(valid_data=data)
+        if not is_reserved_room:
+            return serializers.ValidationError(
+                f"This room is occupied from {data.get('check_in')} to {data.get('check_out')}."
+                f"You should choose another date"
+            )
         return data
 
     def create(self, validated_data):
-        return Booking.objects.create(**validated_data)
+        return Booking.objects.create(
+            status="Reserved",
+            check_in=validated_data.get("check_in"),
+            check_out=validated_data.get("check_out"),
+            room=validated_data.get("room"),
+        )

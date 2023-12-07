@@ -1,9 +1,8 @@
 from rest_framework.routers import DefaultRouter
 
-from .views import CreateBookingModelViewSet, BookingModelViewSet
+from .views import BookingModelViewSet
 
 router = DefaultRouter()
 
 
-router.register(r"bookings-users", CreateBookingModelViewSet, basename="bookings-users")
-router.register(r"bookings-admin", BookingModelViewSet, basename="bookings-admin")
+router.register(r"bookings", BookingModelViewSet, basename="bookings")

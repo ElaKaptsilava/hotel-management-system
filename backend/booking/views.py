@@ -6,22 +6,13 @@ from rest_framework_simplejwt import authentication
 from .models import Booking
 from .serializers import BookingModelSerializer
 from hotel_management import models as hotel_models
-
-
-class CreateBookingModelViewSet(
-    mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
-):
-    queryset = Booking.objects.all()
-    serializer_class = BookingModelSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [authentication.JWTAuthentication]
+from project_permissions.permissions import CustomPermission
 
 
 class BookingModelViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingModelSerializer
-    filter_backends = [DjangoFilterBackend]
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [CustomPermission]
     authentication_classes = [authentication.JWTAuthentication]
 
     def destroy(self, request, *args, **kwargs):

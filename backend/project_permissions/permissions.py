@@ -13,13 +13,13 @@ class CustomPermission(permissions.BasePermission):
         if view.action == "list":
             return True
         elif view.action == "create":
-            return request.user.is_authenticated()
+            return request.user.is_authenticated
         elif view.action in ["retrieve", "update", "partial_update", "destroy"]:
-            return False
+            return request.user.is_staff
         return False
 
     def has_object_permission(self, request, view, obj):
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             return False
         if view.action == ["update", "partial_update", "retrieve", "destroy"]:
             return obj == request.user

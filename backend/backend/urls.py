@@ -40,9 +40,9 @@ urlpatterns = [
     ),
     # Local views
     path("hotel-management/", include(hotel_router.urls)),
-    path("bookings/", include(booking_router.urls)),
+    path("bookings-management/", include(booking_router.urls)),
     path("reviews/", include(reviews_router.urls)),
-    path("discounts_management/", include(discounts_router.urls)),
+    path("discounts-management/", include(discounts_router.urls)),
     # JWT token views
     path("token/", TokenObtainPairView.as_view(), name="token"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
