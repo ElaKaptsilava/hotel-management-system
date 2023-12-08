@@ -11,8 +11,7 @@ class BookingModelSerializer(serializers.ModelSerializer):
         read_only_fields = ["status"]
 
     def validate(self, data):
-        room_locking = RoomLocking()
-        is_reserved_room = room_locking.is_available(valid_data=data)
+        is_reserved_room = RoomLocking.is_available(valid_data=data)
         if not is_reserved_room:
             raise serializers.ValidationError(
                 f"This room is occupied from {data.get('check_in')} to {data.get('check_out')}."
