@@ -1,22 +1,24 @@
 """
 Mechanism for blocking rooms during the reservation period.
 """
+from hotel_management.models import Room
 
 
 class RoomLocking:
-    def is_available(self, valid_data) -> bool:
+    @classmethod
+    def is_available(cls, valid_data) -> bool:
         room = valid_data.get("room")
-        if room.status != "Available":
-            is_available_dates = self.is_available_dates(
+        if room.status != Room.Status.available:
+            is_available_dates = cls.is_available_dates(
                 room=room, valid_data=valid_data
             )
             if not is_available_dates:
                 return False
-        self.set_as_reserved(room=room)
+        cls.set_as_reserved(room=room)
         return True
 
-    @staticmethod
-    def is_available_dates(room, valid_data) -> bool:
+    @classmethod
+    def is_available_dates(cls, room, valid_data) -> bool:
         for booking in room.booking_set.all():
             if (
                 booking.check_in <= valid_data.get("check_in") <= booking.check_out
@@ -25,7 +27,7 @@ class RoomLocking:
                 return False
         return True
 
-    @staticmethod
-    def set_as_reserved(room) -> None:
-        room.status = "Reserved"
+    @classmethod
+    def set_as_reserved(cls, room) -> None:
+        room.status = Room.Status.reserved
         room.save()
