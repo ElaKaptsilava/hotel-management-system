@@ -13,7 +13,6 @@ class BookingModelViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingModelSerializer
     permission_classes = [CustomPermission]
-    authentication_classes = [authentication.JWTAuthentication]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

@@ -19,8 +19,8 @@ class RoomLocking:
     def is_available_dates(room, valid_data) -> bool:
         for booking in room.booking_set.all():
             if (
-                valid_data.get("check_in") >= booking.check_in
-                and valid_data.get("check_out") <= booking.check_out
+                booking.check_in <= valid_data.get("check_in") <= booking.check_out
+                or booking.check_in <= valid_data.get("check_out") <= booking.check_out
             ):
                 return False
         return True
