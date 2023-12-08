@@ -18,3 +18,4 @@ flake8
 black
 
 pytest
+django-phonenumber-field[phonenumberslite]
