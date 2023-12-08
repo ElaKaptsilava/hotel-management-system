@@ -1,4 +1,3 @@
-import rest_framework.exceptions
 from rest_framework import serializers
 
 from .models import Booking
