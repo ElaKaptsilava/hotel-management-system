@@ -7,6 +7,7 @@ from .models import Booking
 from .serializers import BookingModelSerializer
 from hotel_management import models as hotel_models
 from project_permissions.permissions import CustomPermission
+from django.db import transaction
 
 
 class BookingModelViewSet(viewsets.ModelViewSet):
@@ -14,9 +15,11 @@ class BookingModelViewSet(viewsets.ModelViewSet):
     serializer_class = BookingModelSerializer
     permission_classes = [CustomPermission]
 
+    @transaction.atomic
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         room = hotel_models.Room.objects.get(pk=instance.room.pk)
         room.status = "Available"
+        room.save()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
