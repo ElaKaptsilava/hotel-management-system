@@ -1,5 +1,9 @@
+from django.db import transaction
 from rest_framework import serializers
+from rest_framework.exceptions import APIException
 
+from hotel_management.models import Room
+from hotel_management.serializers import RoomModelSerializer
 from .models import Booking
 from .room_locking import RoomLocking
 
@@ -10,14 +14,9 @@ class BookingModelSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ["status"]
 
-    def validate(self, data):
-        is_reserved_room = RoomLocking.is_available(valid_data=data)
-        if not is_reserved_room:
-            raise serializers.ValidationError(
-                f"This room is occupied from {data.get('check_in')} to {data.get('check_out')}."
-                f"You should choose another date"
-            )
-        return data
-
+    @transaction.atomic
     def create(self, validated_data):
+        is_reserved_room = RoomLocking.is_available(valid_data=validated_data)
+        validated_data.get("room").status = Room.Status.reserved
+        validated_data.get("room").save()
         return Booking.objects.create(**validated_data)

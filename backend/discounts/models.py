@@ -10,7 +10,7 @@ class ModelsManager(models.Model):
 
 
 class Discount(ModelsManager):
-    value = models.IntegerField()
+    value = models.IntegerField()  # value_perc and
     is_percentage = models.BooleanField(default=True)
     rooms = models.ManyToManyField(hotel_models.Room, default=list)
 

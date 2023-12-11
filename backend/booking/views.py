@@ -1,7 +1,5 @@
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, permissions, mixins, status
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework_simplejwt import authentication
 
 from .models import Booking
 from .serializers import BookingModelSerializer

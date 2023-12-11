@@ -1,6 +1,8 @@
 """
 Mechanism for blocking rooms during the reservation period.
 """
+from rest_framework.exceptions import APIException
+
 from hotel_management.models import Room
 
 
@@ -9,12 +11,7 @@ class RoomLocking:
     def is_available(cls, valid_data) -> bool:
         room = valid_data.get("room")
         if room.status != Room.Status.available:
-            is_available_dates = cls.is_available_dates(
-                room=room, valid_data=valid_data
-            )
-            if not is_available_dates:
-                return False
-        cls.set_as_reserved(room=room)
+            cls.is_available_dates(room=room, valid_data=valid_data)
         return True
 
     @classmethod
@@ -24,10 +21,8 @@ class RoomLocking:
                 booking.check_in <= valid_data.get("check_in") <= booking.check_out
                 or booking.check_in <= valid_data.get("check_out") <= booking.check_out
             ):
-                return False
+                raise APIException(
+                    f"This room is occupied from {valid_data.get('check_in')} to {valid_data.get('check_out')}."
+                    f"You should choose another date"
+                )
         return True
-
-    @classmethod
-    def set_as_reserved(cls, room) -> None:
-        room.status = Room.Status.reserved
-        room.save()

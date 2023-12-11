@@ -39,10 +39,28 @@ urlpatterns = [
         "schema/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"
     ),
     # Local views
-    path("hotel-management/", include(hotel_router.urls)),
-    path("bookings-management/", include(booking_router.urls)),
-    path("reviews/", include(reviews_router.urls)),
-    path("discounts-management/", include(discounts_router.urls)),
+    path(
+        "hotel-management/",
+        include((hotel_router.urls, "hotel-management"), namespace="hotel-management"),
+    ),
+    path(
+        "bookings-management/",
+        include(
+            (booking_router.urls, "bookings-management"),
+            namespace="bookings-management",
+        ),
+    ),
+    path(
+        "reviews-management/",
+        include(
+            (reviews_router.urls, "reviews-management"), namespace="reviews-management"
+        ),
+    ),
+    path(
+        "discounts-management/",
+        include(discounts_router.urls),
+        name="discounts-management",
+    ),
     # JWT token views
     path("token/", TokenObtainPairView.as_view(), name="token"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),

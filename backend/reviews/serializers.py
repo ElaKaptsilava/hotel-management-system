@@ -1,15 +1,9 @@
-from .models import RoomReview, HotelReview
+from .models import AbstractReview
 
 from rest_framework import serializers
 
 
-class RoomReviewModelSerializer(serializers.ModelSerializer):
+class AbstractReviewModelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RoomReview
-        fields = "__all__"
-
-
-class HotelReviewModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = HotelReview
+        model = AbstractReview
         fields = "__all__"
