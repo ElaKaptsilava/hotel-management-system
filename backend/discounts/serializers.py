@@ -10,8 +10,7 @@ class DiscountModelSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        discount_counter = DiscountCounter()
-        discount_counter.is_percentage(valid_data=validated_data)
+        DiscountCounter.is_percentage(valid_data=validated_data)
         create_discount = Discount.objects.create(
             value=validated_data.get("value"),
             is_percentage=validated_data.get("is_percentage"),

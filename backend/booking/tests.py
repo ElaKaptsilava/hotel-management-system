@@ -3,7 +3,6 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.exceptions import APIException
 from rest_framework.test import APITestCase
 
 from hotel_management.models import Location, Hotel, Room
@@ -44,7 +43,7 @@ class BookingApiTestCase(APITestCase):
             "room": self.create_room.id,
         }
 
-    def test_should_return_True_when_dates_is_available_dates(self):
+    def test_should_return_True_when_is_available_dates(self):
         booking = {
             "user": self.create_admin.id,
             "check_in": datetime.strptime("2023-12-06", "%Y-%m-%d").date(),
@@ -58,7 +57,7 @@ class BookingApiTestCase(APITestCase):
 
         self.assertTrue(is_available_dates)
 
-    def test_should_return_created_object_when_admin_create_booking(self):
+    def test_should_return_created_object_and_when_admin_create_booking(self):
         self.client.login(username="root", password="1234")
 
         request_token = self.client.post(
@@ -76,7 +75,7 @@ class BookingApiTestCase(APITestCase):
         self.assertEqual(request.status_code, status.HTTP_201_CREATED)
         self.assertEqual(request_rooms.json().get("status"), "Reserved")
 
-    def test_when_user_create_booking_with_token_jwt(self):
+    def test_user_create_booking(self):
         self.client.login(username="user", password="1234")
 
         request_token = self.client.post(
@@ -108,9 +107,8 @@ class BookingApiTestCase(APITestCase):
             reverse("token"), {"username": "user", "password": "1234"}, format="json"
         )
         send_booking_1 = self.client.post(
-            self.bookings_list_url, self.booking, format="json"
+            self.bookings_list_url, booking, format="json"
         )
-
         send_booking_2 = self.client.post(
             self.bookings_list_url, self.booking, format="json"
         )
