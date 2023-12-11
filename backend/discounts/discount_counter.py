@@ -7,10 +7,16 @@ from rest_framework import serializers
 class DiscountCounter:
     @classmethod
     def is_percentage(cls, valid_data) -> None:
-        get_value, get_rooms = valid_data.get("value"), valid_data.get("rooms")
+        get_value, get_rooms, get_percentage_value = (
+            valid_data.get("value"),
+            valid_data.get("rooms"),
+            valid_data.get("percentage_value"),
+        )
         for room in get_rooms:
-            if valid_data.get("is_percentage"):
-                cls.calculate_discount_if_percentage(value=get_value, room=get_rooms)
+            if get_percentage_value:
+                cls.calculate_discount_if_percentage(
+                    value=get_percentage_value, room=room
+                )
             else:
                 cls.change_price_per_day_with_discount(discount=get_value, room=room)
 
