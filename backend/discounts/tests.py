@@ -1,12 +1,36 @@
+from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
+from rest_framework.test import APITestCase
 
 from booking.tests import BookingApiTestCase
+from hotel_management.models import Location, Hotel, Room
 from .discount_counter import DiscountCounter
 
 
-class DiscountCounterAPITestCase(BookingApiTestCase):
+class DiscountCounterAPITestCase(APITestCase):
+    def setUp(self):
+        self.create_admin = User.objects.create_superuser(
+            username="root", password="1234", email="root@gmail.com"
+        )
+        self.create_user = User.objects.create_user(
+            username="user", password="1234", email="root@gmail.com"
+        )
+
+        self.create_location = Location.objects.create(
+            city="city", country="country", street="street", state="state"
+        )
+        self.create_hotel = Hotel.objects.create(
+            name="name", location=self.create_location, description="About hotel."
+        )
+        self.create_room = Room.objects.create(
+            room_number=1,
+            prise_per_day=80.00,
+            phone_number="+48713589849",
+            hotel=self.create_hotel,
+        )
+
     def test_changing_price_with_percentage_value(self):
         discount_percentage = {
             "percentage_value": 20,

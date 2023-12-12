@@ -16,23 +16,47 @@ class HotelReport:
     avg_rate: Decimal
     count_rooms: int
     amount_of_reserved: int
+    amount_of_available: int
+    hotel_occupancy_percentage: int
 
 
-def hotel_report():
-    """The function retrieves data for all hotels and computes the required statistics"""
-    data = []
-    queryset = Hotel.objects.all().annotate(
-        count_rooms=Count("room"),
-        avg_rate=Avg("review__rate"),
-        amount_of_reserved=Count("room", filter=Q(room__status=Room.Status.reserved)),
-    )
-    for hotel in queryset.values():
-        hotel_query = Hotel.objects.get(pk=hotel["id"])
-        report = HotelReport(
-            hotel_query,
-            hotel["avg_rate"],
-            hotel["count_rooms"],
-            hotel["amount_of_reserved"],
+class HotelReportGenerate:
+    @classmethod
+    def hotel_report(cls):
+        """
+        Retrieves data for all hotels and computes the required statistics.
+
+        Returns:
+            list: A list of HotelReport objects containing hotel information."""
+        reports = [
+            HotelReport(
+                Hotel.objects.get(pk=hotel.id),
+                hotel.avg_rate,
+                hotel.count_rooms,
+                hotel.amount_of_reserved,
+                hotel.amount_of_available,
+                hotel_occupancy_percentage=round(
+                    (hotel.amount_of_reserved * 100) / hotel.count_rooms
+                ),
+            )
+            for hotel in cls.get_hotel_queryset()
+        ]
+        return reports
+
+    @staticmethod
+    def get_hotel_queryset():
+        """
+        Retrieves the hotel queryset with additional annotations.
+        Returns:
+            QuerySet: An annotated queryset containing hotel data."""
+        hotel_queryset = Hotel.objects.all().annotate(
+            count_rooms=Count("room"),
+            avg_rate=Avg("review__rate"),
+            amount_of_reserved=Count(
+                "room", filter=Q(room__status__exact=Room.Status.reserved)
+            ),
+            amount_of_available=Count(
+                "room", filter=Q(room__status__exact=Room.Status.available)
+            ),
         )
-        data.append(report)
-    return data
+        return hotel_queryset

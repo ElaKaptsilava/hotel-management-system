@@ -1,14 +1,14 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import permissions
+from rest_framework import permissions, status
 
 from project_permissions.permissions import IsAdminOrReadOnly
 from rest_framework import viewsets
 
 from .filters import RoomFilters
 from .models import Hotel, Location, Room
-from .reports import hotel_report
+from .reports import HotelReportGenerate
 from .serializers import (
     HotelModelSerializer,
     LocationModelSerializer,
@@ -41,6 +41,6 @@ class HotelReportApiView(APIView):
     permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
 
     def get(self, request):
-        data = hotel_report()
+        data = HotelReportGenerate.hotel_report()
         serializer = HotelReportModelSerializer(instance=data, many=True)
-        return Response(data=serializer.data)
+        return Response(data=serializer.data, status=status.HTTP_201_CREATED)

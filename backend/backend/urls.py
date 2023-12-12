@@ -64,7 +64,7 @@ urlpatterns = [
             namespace="discounts-management",
         ),
     ),
-    path("reports/", HotelReportApiView.as_view()),
+    path("reports/", HotelReportApiView.as_view(), name="reports"),
     # JWT token views
     path("token/", TokenObtainPairView.as_view(), name="token"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
