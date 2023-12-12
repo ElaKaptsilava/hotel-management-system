@@ -4,14 +4,14 @@ from rest_framework.response import Response
 from .models import Booking
 from .serializers import BookingModelSerializer
 from hotel_management import models as hotel_models
-from project_permissions.permissions import CustomPermission
+from project_permissions.permissions import PermissionHandler
 from django.db import transaction
 
 
 class BookingModelViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingModelSerializer
-    permission_classes = [CustomPermission]
+    permission_classes = [PermissionHandler]
 
     @transaction.atomic
     def destroy(self, request, *args, **kwargs):

@@ -13,7 +13,7 @@ class DiscountModelSerializer(serializers.ModelSerializer):
         DiscountCounter.is_percentage(valid_data=validated_data)
         create_discount = Discount.objects.create(
             value=validated_data.get("value"),
-            is_percentage=validated_data.get("is_percentage"),
+            percentage_value=validated_data.get("percentage_value"),
         )
         create_discount.rooms.set(validated_data.get("rooms"))
         return create_discount

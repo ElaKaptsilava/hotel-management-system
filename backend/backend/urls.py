@@ -58,8 +58,10 @@ urlpatterns = [
     ),
     path(
         "discounts-management/",
-        include(discounts_router.urls),
-        name="discounts-management",
+        include(
+            (discounts_router.urls, "discounts-management"),
+            namespace="discounts-management",
+        ),
     ),
     # JWT token views
     path("token/", TokenObtainPairView.as_view(), name="token"),

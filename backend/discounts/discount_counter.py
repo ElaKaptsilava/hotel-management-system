@@ -26,9 +26,8 @@ class DiscountCounter:
         cls.change_price_per_day_with_discount(discount=calculate_discount, room=room)
 
     @classmethod
-    def change_price_per_day_with_discount(cls, discount: float, room) -> None:
+    def change_price_per_day_with_discount(cls, discount: float, room):
         room.prise_per_day -= discount
         if room.prise_per_day < 0:
             raise serializers.ValidationError("Price cannot be less than 0")
-        else:
-            room.save()
+        room.save()
