@@ -5,6 +5,12 @@ from rest_framework import serializers
 
 
 class DiscountCounter:
+    """The `DiscountCounter` class provides methods for handling discounts and promotions related to room prices.
+
+    Usage:
+    - Call `is_percentage(valid_data)` when applying discounts to room prices.
+    - Handle any raised `ValidationError` appropriately in your application logic."""
+
     @classmethod
     def is_percentage(cls, valid_data) -> None:
         get_value, get_rooms, get_percentage_value = (

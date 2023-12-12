@@ -19,3 +19,10 @@ class RoomModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = "__all__"
+
+
+class HotelReportModelSerializer(serializers.Serializer):
+    hotel = HotelModelSerializer()
+    avg_rate = serializers.DecimalField(max_digits=5, decimal_places=2)
+    count_rooms = serializers.IntegerField()
+    amount_of_reserved = serializers.IntegerField()

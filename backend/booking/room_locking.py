@@ -7,6 +7,12 @@ from hotel_management.models import Room
 
 
 class RoomLocking:
+    """`RoomLocking`, provides methods to check room availability and prevent double booking during the reservation process.
+
+    Usage:
+    - Call `is_available(valid_data)` before confirming a reservation to ensure the room is available.
+    - Handle the raised `APIException` appropriately in your application logic."""
+
     @classmethod
     def is_available(cls, valid_data) -> bool:
         room = valid_data.get("room")
