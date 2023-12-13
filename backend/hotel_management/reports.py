@@ -30,7 +30,7 @@ class HotelReportGenerate:
             list: A list of HotelReport objects containing hotel information."""
         reports = [
             HotelReport(
-                Hotel.objects.get(pk=hotel.id),
+                hotel,
                 hotel.avg_rate,
                 hotel.count_rooms,
                 hotel.amount_of_reserved,

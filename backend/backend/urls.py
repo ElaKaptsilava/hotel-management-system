@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import debug_toolbar
 from django.contrib import admin
 from django.urls import path, include
 from hotel_management.api import router as hotel_router
@@ -29,6 +30,8 @@ from drf_spectacular.views import (
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # Debug Toolbar
+    path("__debug__/", include(debug_toolbar.urls)),
     # DRF spectacular views
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
@@ -64,6 +67,7 @@ urlpatterns = [
             namespace="discounts-management",
         ),
     ),
+    # reports
     path("reports/", HotelReportApiView.as_view(), name="reports"),
     # JWT token views
     path("token/", TokenObtainPairView.as_view(), name="token"),

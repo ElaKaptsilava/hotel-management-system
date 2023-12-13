@@ -9,15 +9,15 @@ class LocationModelSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class HotelModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Hotel
-        fields = "__all__"
-
-
 class RoomModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
+        fields = "__all__"
+
+
+class HotelModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hotel
         fields = "__all__"
 
 

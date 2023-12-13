@@ -4,7 +4,6 @@ from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.test import APITestCase
 
-from booking.tests import BookingApiTestCase
 from hotel_management.models import Location, Hotel, Room
 from .discount_counter import DiscountCounter
 
@@ -40,7 +39,7 @@ class DiscountCounterAPITestCase(APITestCase):
         DiscountCounter.is_percentage(discount_percentage)
         self.assertEqual(self.create_room.prise_per_day, 64)
 
-    def test_changing_price_with_currency(self):
+    def test_changing_price_with_value(self):
         discount_percentage = {
             "value": 20,
             "rooms": [self.create_room],
@@ -49,7 +48,7 @@ class DiscountCounterAPITestCase(APITestCase):
         DiscountCounter.is_percentage(discount_percentage)
         self.assertEqual(self.create_room.prise_per_day, 60)
 
-    def test_should_return_ValidationError_when_changing_price_with_currency(self):
+    def test_should_return_ValidationError_when_changing_price_with_value(self):  #
         discount_percentage = {
             "value": 100,
             "rooms": [self.create_room],

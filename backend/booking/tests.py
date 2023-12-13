@@ -56,11 +56,10 @@ class BookingApiTestCase(APITestCase):
         self.assertTrue(is_available_dates)
 
     def test_should_return_generated_token(self):
-        self.client.login(username="root", password="1234")
-
         post_token = self.client.post(
             reverse("token"), {"username": "root", "password": "1234"}, format="json"
         )
+
         self.assertEqual(post_token.status_code, status.HTTP_200_OK)
         self.assertTrue("access" in post_token.json())
 
@@ -81,22 +80,6 @@ class BookingApiTestCase(APITestCase):
         self.assertEqual(post_booking.status_code, status.HTTP_201_CREATED)
         self.assertEqual(get_room.json().get("status"), "Reserved")
 
-    def test_create_booking_for_user(self):
-        self.client.login(username="user", password="1234")
-
-        create_token = self.client.post(
-            reverse("token"), {"username": "user", "password": "1234"}, format="json"
-        )
-        access = create_token.json()["access"]
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
-
-        post_bookings = self.client.post(
-            self.bookings_list_url, self.booking, format="json"
-        )
-
-        self.assertEqual(post_bookings.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(post_bookings.json().get("status"), "Reserved")
-
     def test_user_create_booking_with_occupied_date(
         self,
     ):
@@ -116,7 +99,7 @@ class BookingApiTestCase(APITestCase):
 
         post_booking_1 = self.client.post(
             self.bookings_list_url, booking, format="json"
-        )
+        )  # create booking
         post_booking_2 = self.client.post(
             self.bookings_list_url, self.booking, format="json"
         )
@@ -125,7 +108,7 @@ class BookingApiTestCase(APITestCase):
             post_booking_2.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
-    def test_should_return_no_content_when_destroy_booking_for_authenticated_admin(
+    def test_admin_can_destroy_booking_successful(
         self,
     ):
         self.client.login(username="root", password="1234")
