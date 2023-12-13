@@ -16,9 +16,10 @@ Including another URLconf
 import debug_toolbar
 from django.contrib import admin
 from django.urls import path, include
+
+import reports
 from hotel_management.api import router as hotel_router
 from booking.api import router as booking_router
-from hotel_management.views import HotelReportApiView
 from reviews.api import router as reviews_router
 from discounts.api import router as discounts_router
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -68,7 +69,7 @@ urlpatterns = [
         ),
     ),
     # reports
-    path("reports/", HotelReportApiView.as_view(), name="reports"),
+    path("reports/", include("reports.urls")),
     # JWT token views
     path("token/", TokenObtainPairView.as_view(), name="token"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
