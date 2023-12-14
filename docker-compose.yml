@@ -17,6 +17,7 @@ services:
     entrypoint: /app/docker/backend/server-entrypoint.sh
     volumes:
       - static_volume:/app/backend/django_static
+      - .:/app/
     expose:
       - 8000
     environment:

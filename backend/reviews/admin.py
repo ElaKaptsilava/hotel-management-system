@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from .models import RoomReview, HotelReview
+from .models import AbstractReview
 
-admin.site.register(RoomReview)
-admin.site.register(HotelReview)
+admin.site.register(AbstractReview)

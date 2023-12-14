@@ -1,5 +1,8 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+
+from reviews.models import AbstractReview
 
 
 class ModelsManager(models.Model):
@@ -13,6 +16,7 @@ class Hotel(ModelsManager):
     name = models.CharField(max_length=250)
     location = models.OneToOneField("Location", on_delete=models.CASCADE)
     description = models.TextField()
+    review = GenericRelation(AbstractReview)
 
 
 class Location(ModelsManager):
@@ -36,3 +40,4 @@ class Room(ModelsManager):
     prise_per_day = models.DecimalField(max_digits=5, decimal_places=2)
     phone_number = PhoneNumberField(blank=True)
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    review = GenericRelation(AbstractReview)
