@@ -19,7 +19,7 @@ class HotelModelViewSet(viewsets.ModelViewSet):
 
 
 class RoomModelViewSet(viewsets.ModelViewSet):
-    queryset = Room.objects.all()
+    queryset = Room.objects.with_booking()
     serializer_class = RoomModelSerializer
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [DjangoFilterBackend]

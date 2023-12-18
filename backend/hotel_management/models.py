@@ -28,18 +28,31 @@ class Location(ModelsManager):
     state = models.CharField(max_length=250)
 
 
-class Room(models.Model):
-    class Status(models.TextChoices):
-        available = "Available"
-        not_available = "NotAvailable"
-        reserved = "Reserved"
-        occupied = "Occupied"
+class RoomQuerySet(QuerySet):
+    def with_booking(self):
+        return self.prefetch_related("booking_set").annotate(
+            is_available=models.Case(
+                models.When(
+                    booking__check_in__lte=timezone.now(),
+                    booking__check_out__gt=timezone.now(),
+                    then=True,
+                ),
+                default=False,
+                output_field=models.BooleanField(),
+            )
+        )
 
+
+class Room(ModelsManager):
     room_number = models.IntegerField(unique=True)
-    status = models.CharField(
-        max_length=15, choices=Status.choices, default=Status.available
-    )
     prise_per_day = models.DecimalField(max_digits=5, decimal_places=2)
     phone_number = PhoneNumberField(blank=True)
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     review = GenericRelation(AbstractReview)
+
+    objects = RoomQuerySet.as_manager()
+
+    @property
+    def is_available_status(self):
+        if hasattr(self, "is_available"):
+            return self.is_available

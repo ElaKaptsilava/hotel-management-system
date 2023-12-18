@@ -17,11 +17,11 @@ class RoomModelSerializer(serializers.ModelSerializer):
         model = Room
         fields = [
             "room_number",
-            "status",
             "prise_per_day",
             "phone_number",
             "hotel",
             "booking_set",
+            "is_available_status",
         ]
 
 

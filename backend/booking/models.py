@@ -22,20 +22,14 @@ class BookingQuerySet(QuerySet):
 
 
 class Booking(models.Model):
-    class Status(models.TextChoices):
-        reserved = "Reserved"
-        canceled = "Canceled"
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    status = models.CharField(
-        max_length=20, choices=Status.choices, default=Status.reserved
-    )
     check_in = models.DateField(default=timezone.now)
     check_out = models.DateField(default=timezone.now)
     room = models.ForeignKey(hotel_models.Room, on_delete=models.CASCADE, null=True)
 
     objects = BookingQuerySet.as_manager()
 
-    def is_active(self):
+    @property
+    def is_active_status(self):
         if hasattr(self, "is_active"):
             return self.is_active
