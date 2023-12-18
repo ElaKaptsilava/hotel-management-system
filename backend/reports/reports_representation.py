@@ -22,11 +22,10 @@ class RoomReport:
 class HotelReport:
     """Data class represents a single hotel's report"""
 
-    hotel: Hotel
+    hotel: str
     avg_rate: Decimal
     count_rooms: int
-    amount_of_reserved: int
-    amount_of_available: int
+    amount_of_occupied: int
     hotel_occupancy_percentage: int
 
 

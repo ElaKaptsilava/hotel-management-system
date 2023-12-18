@@ -46,33 +46,37 @@ class RoomReportGenerate:
 
 class HotelReportGenerate:
     @classmethod
-    def hotel_report(cls):
+    def hotel_report(cls, hotel_name):
         reports = [
             HotelReport(
-                hotel,
+                hotel_name,
                 hotel.avg_rate,
                 hotel.count_rooms,
-                hotel.amount_of_reserved,
-                hotel.amount_of_available,
+                hotel.amount_of_occupied,
                 hotel_occupancy_percentage=round(
-                    (hotel.amount_of_reserved * 100) / hotel.count_rooms
+                    hotel.amount_of_occupied * 100 / hotel.count_rooms
                 ),
             )
-            for hotel in cls.get_hotel_queryset()
+            for hotel in cls.get_hotel_queryset(hotel_name)
         ]
         return reports
 
     @staticmethod
-    def get_hotel_queryset():
-        hotel_queryset = Hotel.objects.all().annotate(
-            count_rooms=Count("room"),
-            avg_rate=Avg("review__rate"),
-            amount_of_reserved=Count(
-                "room", filter=Q(room__status__exact=Room.Status.reserved)
-            ),
-            amount_of_available=Count(
-                "room", filter=Q(room__status__exact=Room.Status.available)
-            ),
+    def get_hotel_queryset(hotel_name):
+        hotel_queryset = (
+            Hotel.objects.filter(name=hotel_name)
+            .prefetch_related("room_set", "review")
+            .annotate(
+                count_rooms=Count("room"),
+                avg_rate=Avg("review__rate"),
+                amount_of_occupied=Count(
+                    "room",
+                    filter=Q(
+                        room__booking__check_in__lte=timezone.now(),
+                        room__booking__check_out__gt=timezone.now(),
+                    ),
+                ),
+            )
         )
         return hotel_queryset
 
@@ -94,5 +98,5 @@ class BookingReportGenerate:
             models.Q(check_in__gte=timezone.now())
             & models.Q(check_in__lte=timezone.now() + timedelta(days=7))
         )
-        select_booking = filter_booking_gte_now.select_related("room__hotel")
+        select_booking = filter_booking_gte_now.select_related("room__hotel").annotate
         return select_booking

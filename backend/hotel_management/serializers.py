@@ -12,6 +12,7 @@ class LocationModelSerializer(serializers.ModelSerializer):
 
 class RoomModelSerializer(serializers.ModelSerializer):
     booking_set = BookingModelSerializer(read_only=True, many=True)
+    is_available_status = serializers.Field(source="is_available_status")
 
     class Meta:
         model = Room

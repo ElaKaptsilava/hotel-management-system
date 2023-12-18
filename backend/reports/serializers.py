@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from hotel_management.models import Hotel
 from hotel_management.serializers import HotelModelSerializer, RoomModelSerializer
 
 
@@ -12,11 +13,10 @@ class RoomReportModelSerializer(serializers.Serializer):
 
 
 class HotelReportModelSerializer(serializers.Serializer):
-    hotel = HotelModelSerializer()
+    hotel = serializers.CharField(max_length=256)
     avg_rate = serializers.DecimalField(max_digits=5, decimal_places=2)
     count_rooms = serializers.IntegerField()
-    amount_of_reserved = serializers.IntegerField()
-    amount_of_available = serializers.IntegerField()
+    amount_of_occupied = serializers.IntegerField()
     hotel_occupancy_percentage = serializers.IntegerField()
 
 
@@ -25,3 +25,10 @@ class BookingReportModelSerializer(serializers.Serializer):
     room = RoomModelSerializer()
     arrival = serializers.DateField()
     check_out = serializers.DateField()
+
+
+class HotelInitialModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hotel
+        fields = ["name"]
+        write_only_fields = ["name"]

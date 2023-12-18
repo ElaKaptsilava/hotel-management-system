@@ -30,6 +30,28 @@ class ReportApiTestCase(APITestCase):
             phone_number="+48713589849",
             hotel=self.create_hotel,
         )
+        self.create_booking = Booking.objects.create(
+            user=self.create_admin,
+            check_in="2023-12-06",
+            check_out="2023-12-13",
+            room=self.create_room,
+        )
+
+    def test_should_return_403_for_authenticated_user(self):
+        self.client.login(username="user", password="1234")
+        create_token = self.client.post(
+            reverse("token"), {"username": "user", "password": "1234"}, format="json"
+        )
+        access = create_token.json()["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
+
+        get_reports = self.client.get(reverse("reports:hotel-reports"), format="json")
+
+        self.assertEqual(
+            get_reports.json()["detail"],
+            "You do not have permission to perform this action.",
+        )
+        self.assertEqual(get_reports.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_should_return_reports_for_authenticated_admin(self):
         self.client.login(username="root", password="1234")
@@ -39,14 +61,7 @@ class ReportApiTestCase(APITestCase):
         access = create_token.json()["access"]
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
 
-        create_booking = Booking.objects.create(
-            user=self.create_admin,
-            check_in=datetime.strptime("2023-12-06", "%Y-%m-%d").date(),
-            check_out=datetime.strptime("2023-12-10", "%Y-%m-%d").date(),
-            room=self.create_room,
-        )
-
-        get_reports = self.client.get(reverse("reports"))
+        get_reports = self.client.get(reverse("reports:hotel-reports"))
         get_hotel = self.client.get(
             reverse(
                 "hotel-management:hotels-detail", kwargs={"pk": self.create_hotel.id}
@@ -66,19 +81,3 @@ class ReportApiTestCase(APITestCase):
 
         self.assertEqual(get_reports.json(), required)
         self.assertEqual(get_reports.status_code, status.HTTP_201_CREATED)
-
-    def test_should_return_403_for_authenticated_user(self):
-        self.client.login(username="user", password="1234")
-        create_token = self.client.post(
-            reverse("token"), {"username": "user", "password": "1234"}, format="json"
-        )
-        access = create_token.json()["access"]
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
-
-        get_reports = self.client.get(reverse("reports"))
-
-        self.assertEqual(
-            get_reports.json()["detail"],
-            "You do not have permission to perform this action.",
-        )
-        self.assertEqual(get_reports.status_code, status.HTTP_403_FORBIDDEN)

@@ -17,11 +17,11 @@ import debug_toolbar
 from django.contrib import admin
 from django.urls import path, include
 
-import reports
 from hotel_management.api import router as hotel_router
 from booking.api import router as booking_router
 from reviews.api import router as reviews_router
 from discounts.api import router as discounts_router
+from reports.api import router as reports_router
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -68,8 +68,18 @@ urlpatterns = [
             namespace="discounts-management",
         ),
     ),
+    path(
+        "reports-api/",
+        include((reports_router.urls, "reports-api"), namespace="reports-api"),
+    ),
     # reports
-    path("", include("reports.urls")),
+    path(
+        "",
+        include(
+            ("reports.urls", "reports"),
+            namespace="reports",
+        ),
+    ),
     # JWT token views
     path("token/", TokenObtainPairView.as_view(), name="token"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
