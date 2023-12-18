@@ -33,3 +33,4 @@ class Booking(models.Model):
     def is_active_status(self):
         if hasattr(self, "is_active"):
             return self.is_active
+        return True if self.check_in == timezone.now().date() else False

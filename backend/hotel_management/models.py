@@ -56,3 +56,6 @@ class Room(ModelsManager):
     def is_available_status(self):
         if hasattr(self, "is_available"):
             return self.is_available
+        return self.booking_set.filter(
+            check_in__lte=timezone.now(), check_out__gt=timezone.now()
+        ).exists()
