@@ -69,7 +69,7 @@ urlpatterns = [
         ),
     ),
     # reports
-    path("reports/", include("reports.urls")),
+    path("", include("reports.urls")),
     # JWT token views
     path("token/", TokenObtainPairView.as_view(), name="token"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),

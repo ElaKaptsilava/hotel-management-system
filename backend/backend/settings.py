@@ -210,3 +210,17 @@ if DEBUG:
     import mimetypes
 
     mimetypes.add_type("application/javascript", ".js", True)
+
+import sentry_sdk
+from sentry_sdk.crons import monitor
+
+sentry_sdk.init(
+    dsn="https://746802836e650a6c9d3af12c0df11eab@o4506400042844160.ingest.sentry.io/4506400044417024",
+    traces_sample_rate=1.0,
+    profiles_sample_rate=1.0,
+)
+
+
+@monitor(monitor_slug="hotel_management_system")
+def tell_the_world(msg):
+    print(msg)

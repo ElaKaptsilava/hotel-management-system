@@ -1,9 +1,9 @@
-from django.contrib import admin
 from django.urls import path
 
-from reports.views import HotelReportApiView
+from reports.views import HotelReportApiView, RoomReportApiView, BookingReportApiView
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("hotel_reports/", HotelReportApiView.as_view(), name="hotel-reports"),
+    path("hotel-reports/", HotelReportApiView.as_view(), name="hotel-reports"),
+    path("room-reports/", RoomReportApiView.as_view(), name="room-reports"),
+    path("booking-reports/", BookingReportApiView.as_view(), name="booking-reports"),
 ]

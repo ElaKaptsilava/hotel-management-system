@@ -1,9 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
-from rest_framework.exceptions import APIException
 
 from hotel_management.models import Room
-from hotel_management.serializers import RoomModelSerializer
 from .models import Booking
 from .room_locking import RoomLocking
 
@@ -11,7 +9,7 @@ from .room_locking import RoomLocking
 class BookingModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = "__all__"
+        fields = ["id", "user", "status", "check_in", "check_out", "room", "is_active"]
         read_only_fields = ["status"]
 
     @transaction.atomic

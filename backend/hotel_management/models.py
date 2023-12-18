@@ -1,5 +1,7 @@
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.db.models import QuerySet
+from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 
 from reviews.models import AbstractReview
@@ -26,7 +28,7 @@ class Location(ModelsManager):
     state = models.CharField(max_length=250)
 
 
-class Room(ModelsManager):
+class Room(models.Model):
     class Status(models.TextChoices):
         available = "Available"
         not_available = "NotAvailable"

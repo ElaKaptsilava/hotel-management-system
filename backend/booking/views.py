@@ -9,7 +9,7 @@ from django.db import transaction
 
 
 class BookingModelViewSet(viewsets.ModelViewSet):
-    queryset = Booking.objects.all()
+    queryset = Booking.objects.with_booking()
     serializer_class = BookingModelSerializer
     permission_classes = [PermissionHandler]
 
