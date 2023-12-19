@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import QuerySet
 from django.utils import timezone
+from phonenumber_field.modelfields import PhoneNumberField
 
 from hotel_management import models as hotel_models
 
@@ -26,6 +27,7 @@ class Booking(models.Model):
     check_in = models.DateField(default=timezone.now)
     check_out = models.DateField(default=timezone.now)
     room = models.ForeignKey(hotel_models.Room, on_delete=models.CASCADE, null=True)
+    phone = PhoneNumberField(null=True, blank=True)
 
     objects = BookingQuerySet.as_manager()
 

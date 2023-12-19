@@ -3,37 +3,37 @@
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
+from typing import Optional
 
 from hotel_management.models import Hotel, Room
 
 
 @dataclass
-class RoomReport:
+class RoomReportRepr:
     """Data class represents a single room's report"""
 
-    hotel_name: str
-    room_number: int
+    hotel: int
+    room: int
     amount_of_booking: int
-    avg_rate: Decimal
+    avg_rate: float
     next_arrival: date
 
 
 @dataclass
-class HotelReport:
+class HotelReportRepr:
     """Data class represents a single hotel's report"""
 
     hotel: str
-    avg_rate: Decimal
+    avg_rate: float
     count_rooms: int
     amount_of_occupied: int
-    hotel_occupancy_percentage: int
 
 
 @dataclass
 class BookingReport:
     """Data class represents a single booking's report"""
 
-    hotel: Hotel
-    room: Room
+    hotel: str
+    room: int
     arrival: date
     check_out: date

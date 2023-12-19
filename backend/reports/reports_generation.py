@@ -6,30 +6,35 @@ from django.utils import timezone
 
 from booking.models import Booking
 from hotel_management.models import Hotel, Room
-from reports.reports_representation import HotelReport, RoomReport, BookingReport
+from reports.reports_representation import (
+    RoomReportRepr,
+    BookingReport,
+    HotelReportRepr,
+)
 
 
 class RoomReportGenerate:
     @classmethod
-    def room_report(cls):
-        reports = [
-            RoomReport(
-                room.hotel.name,
-                room.room_number,
+    def room_report(cls, hotel):
+        rooms_instance = hotel.room_set.all()
+        reports = []
+        for room in cls.get_room_queryset(rooms_instance=rooms_instance):
+            report = RoomReportRepr(
+                hotel.pk,
+                room.pk,
                 room.amount_of_booking,
-                room.avg_rate,
+                room.avg_rate if room.avg_rate is not None else 0,
                 room.next_arrival,
             )
-            for room in cls.get_user_queryset()
-        ]
+            reports.append(report.__dict__)
+        print(reports)
         return reports
 
     @staticmethod
-    def get_user_queryset():
-        room_select_related = Room.objects.prefetch_related(
-            "booking_set", "hotel", "review"
-        )
-        room_queryset = room_select_related.annotate(
+    def get_room_queryset(rooms_instance):
+        room_queryset = rooms_instance.prefetch_related(
+            "booking_set", "review"
+        ).annotate(
             amount_of_booking=Count("booking"),
             avg_rate=Avg("review"),
             next_arrival=models.Case(
@@ -47,18 +52,10 @@ class RoomReportGenerate:
 class HotelReportGenerate:
     @classmethod
     def hotel_report(cls, hotel_name):
-        reports = [
-            HotelReport(
-                hotel_name,
-                hotel.avg_rate,
-                hotel.count_rooms,
-                hotel.amount_of_occupied,
-                hotel_occupancy_percentage=round(
-                    hotel.amount_of_occupied * 100 / hotel.count_rooms
-                ),
-            )
-            for hotel in cls.get_hotel_queryset(hotel_name)
-        ]
+        hotel = cls.get_hotel_queryset(hotel_name=hotel_name)[0]
+        reports = HotelReportRepr(
+            hotel.name, hotel.avg_rate, hotel.count_rooms, hotel.amount_of_occupied
+        )
         return reports
 
     @staticmethod

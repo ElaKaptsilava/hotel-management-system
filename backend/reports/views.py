@@ -1,59 +1,59 @@
-from rest_framework import permissions, status
+from django.db import transaction, models
+from django.utils import timezone
+from rest_framework import permissions, status, mixins
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework import viewsets
 
-from hotel_management.models import Hotel
+from .models import HotelReport, RoomReport
 from .serializers import (
-    HotelReportModelSerializer,
     RoomReportModelSerializer,
-    BookingReportModelSerializer,
     HotelInitialModelSerializer,
+    HotelReportModelSerializer,
+    RoomReportInitialModelSerializer,
 )
 from .reports_generation import (
     HotelReportGenerate,
     RoomReportGenerate,
-    BookingReportGenerate,
 )
 
 
-class HotelReportApiView(APIView):
+class RoomInitialModelViewSet(
+    mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+):
+    serializer_class = RoomReportInitialModelSerializer
+    queryset = RoomReport.objects.filter(
+        models.Q(generated__month=timezone.now().month)
+    )
     permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
 
-    def get(self, request):
-        data = HotelReportGenerate.hotel_report()
-        serializer = HotelReportModelSerializer(instance=data, many=True)
-        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+    @transaction.atomic
+    def create(self, request, *args, **kwargs):
+        serializer_initial_room = self.serializer_class(data=request.data)
+        serializer_initial_room.is_valid(raise_exception=True)
+        hotel = serializer_initial_room.validated_data.get("hotel", None)
+        reports = RoomReportGenerate.room_report(hotel)
+        serializer_room = RoomReportInitialModelSerializer(data=reports, many=True)
+        serializer_room.is_valid(raise_exception=True)
+        serializer_room.save()
+        return Response(serializer_room.validated_data, status=status.HTTP_201_CREATED)
 
 
-class RoomReportApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
-
-    def get(self, request):
-        data = RoomReportGenerate.room_report()
-        serializer = RoomReportModelSerializer(instance=data, many=True)
-        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-
-
-class BookingReportApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
-
-    def get(self, request):
-        data = BookingReportGenerate.booking_report()
-        serializer = BookingReportModelSerializer(instance=data, many=True)
-        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-
-
-class HotelInitialModelViewSet(viewsets.ModelViewSet):
+class HotelInitialModelViewSet(
+    mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+):
     serializer_class = HotelInitialModelSerializer
-    queryset = Hotel.objects.all()
+    queryset = HotelReport.objects.filter(
+        models.Q(generated__month=timezone.now().month)
+    )
+    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
 
+    @transaction.atomic
     def create(self, request, *args, **kwargs):
         serializer_initial_hotel = self.serializer_class(data=request.data)
         serializer_initial_hotel.is_valid(raise_exception=True)
-        hotel_name = serializer_initial_hotel.validated_data.get("name", None)
+        hotel_name = serializer_initial_hotel.validated_data.get("hotel_name", None)
         report = HotelReportGenerate.hotel_report(hotel_name)
-        serializer_hotel = HotelReportModelSerializer(data=report, many=True)
-        serializer_hotel.is_valid()
+        serializer_hotel = HotelReportModelSerializer(data=report.__dict__)
+        serializer_hotel.is_valid(raise_exception=True)
         serializer_hotel.save()
-        return Response(serializer_hotel.data, status=status.HTTP_201_CREATED)
+        return Response(serializer_hotel.validated_data, status=status.HTTP_201_CREATED)
