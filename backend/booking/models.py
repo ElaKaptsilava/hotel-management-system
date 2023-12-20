@@ -32,7 +32,7 @@ class Booking(models.Model):
     objects = BookingQuerySet.as_manager()
 
     @property
-    def is_active_status(self):
+    def is_active_status(self) -> bool:
         if hasattr(self, "is_active"):
             return self.is_active
         return True if self.check_in == timezone.now().date() else False

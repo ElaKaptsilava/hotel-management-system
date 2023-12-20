@@ -9,6 +9,7 @@ class RoomReportInitialModelSerializer(serializers.ModelSerializer):
         model = RoomReport
         fields = "__all__"
         read_only_fields = [
+            "id",
             "room",
             "avg_rate",
             "amount_of_booking",
@@ -34,12 +35,13 @@ class HotelInitialModelSerializer(serializers.ModelSerializer):
             "count_rooms",
             "amount_of_occupied",
             "hotel_occupancy_percentage",
+            "count_discounts",
             "generated",
         ]
 
     def validate(self, data):
         hotel_name = data.get("hotel_name")
-        if Hotel.objects.filter(name=hotel_name):
+        if not Hotel.objects.filter(name=hotel_name):
             raise serializers.ValidationError("The hotel doesn't exist yet.")
         return data
 

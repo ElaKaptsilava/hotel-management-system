@@ -5,9 +5,10 @@ from hotel_management.models import Hotel, Room
 
 class HotelReport(models.Model):
     hotel_name = models.CharField(max_length=256, default="hotel")
-    avg_rate = models.FloatField()
+    avg_rate = models.FloatField(null=True, blank=True)
     count_rooms = models.IntegerField()
     amount_of_occupied = models.IntegerField()
+    count_discounts = models.PositiveIntegerField(default=0)
     hotel_occupancy_percentage = models.GeneratedField(
         expression=models.F("amount_of_occupied") * 100 / models.F("count_rooms"),
         output_field=models.FloatField(),

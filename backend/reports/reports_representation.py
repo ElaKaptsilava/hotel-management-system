@@ -27,6 +27,7 @@ class HotelReportRepr:
     avg_rate: float
     count_rooms: int
     amount_of_occupied: int
+    count_discounts: int
 
 
 @dataclass

@@ -20,8 +20,8 @@ class RoomReportGenerate:
         reports = []
         for room in cls.get_room_queryset(rooms_instance=rooms_instance):
             report = RoomReportRepr(
-                hotel.pk,
-                room.pk,
+                hotel.id,
+                room.id,
                 room.amount_of_booking,
                 room.avg_rate if room.avg_rate is not None else 0,
                 room.next_arrival,
@@ -54,7 +54,11 @@ class HotelReportGenerate:
     def hotel_report(cls, hotel_name):
         hotel = cls.get_hotel_queryset(hotel_name=hotel_name)[0]
         reports = HotelReportRepr(
-            hotel.name, hotel.avg_rate, hotel.count_rooms, hotel.amount_of_occupied
+            hotel.name,
+            hotel.avg_rate,
+            hotel.count_rooms,
+            hotel.amount_of_occupied,
+            hotel.count_discounts,
         )
         return reports
 
@@ -62,7 +66,7 @@ class HotelReportGenerate:
     def get_hotel_queryset(hotel_name):
         hotel_queryset = (
             Hotel.objects.filter(name=hotel_name)
-            .prefetch_related("room_set", "review")
+            .prefetch_related("room_set__discount_set", "review")
             .annotate(
                 count_rooms=Count("room"),
                 avg_rate=Avg("review__rate"),
@@ -72,6 +76,10 @@ class HotelReportGenerate:
                         room__booking__check_in__lte=timezone.now(),
                         room__booking__check_out__gt=timezone.now(),
                     ),
+                ),
+                count_discounts=Count(
+                    "room__discount",
+                    filter=Q(room__discount__generated__month=timezone.now().month),
                 ),
             )
         )

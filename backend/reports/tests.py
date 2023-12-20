@@ -43,15 +43,24 @@ class ReportApiTestCase(APITestCase):
             room=self.create_room,
         )
 
-    # def test_hotel_report_generated(self):
-    #     hotel_report = HotelReportGenerate.hotel_report('name')
-    #
-    #     self.assertEqual(hotel_report.__dict__, '')
+    def test_room_report(self):
+        self.client.login(username="root", password="1234")
 
-    def test_room_report_generated(self):
-        room_report = RoomReportGenerate.room_report(self.create_hotel)
-        print(room_report)
-        self.assertEqual(room_report, room_report)
+        create_token = self.client.post(
+            reverse("token"), {"username": "root", "password": "1234"}, format="json"
+        )
+
+        access = create_token.json()["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
+
+        get_reports = self.client.post(
+            reverse("reports-api:room-reports-list"),
+            kwargs={"hotel": self.create_hotel},
+            format="json",
+        )
+        print(get_reports)
+        print(get_reports.json())
+        self.assertEqual(get_reports.json(), get_reports)
 
     # def test_should_return_403_for_authenticated_user(self):
     #     self.client.login(username="user", password="1234")

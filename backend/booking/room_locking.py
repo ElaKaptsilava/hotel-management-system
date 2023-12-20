@@ -37,14 +37,3 @@ class RoomLocking:
                 f"You should choose another date"
             )
         return True
-        # if is_available:
-        #     for booking in room.booking_set.all():
-        #         if (
-        #                 booking.check_in <= valid_data.get("check_in") <= booking.check_out
-        #                 or booking.check_in <= valid_data.get("check_out") <= booking.check_out
-        #         ):
-        #             raise APIException(
-        #                 f"This room is occupied from {valid_data.get('check_in')} to {valid_data.get('check_out')}."
-        #                 f"You should choose another date"
-        #             )
-        # return True

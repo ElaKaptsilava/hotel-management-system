@@ -53,7 +53,7 @@ class Room(ModelsManager):
     objects = RoomQuerySet.as_manager()
 
     @property
-    def is_available_status(self):
+    def is_available_status(self) -> bool:
         if hasattr(self, "is_available"):
             return self.is_available
         return self.booking_set.filter(

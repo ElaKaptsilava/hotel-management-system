@@ -18,7 +18,10 @@ from .reports_generation import (
 
 
 class RoomInitialModelViewSet(
-    mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
 ):
     serializer_class = RoomReportInitialModelSerializer
     queryset = RoomReport.objects.filter(
@@ -32,14 +35,17 @@ class RoomInitialModelViewSet(
         serializer_initial_room.is_valid(raise_exception=True)
         hotel = serializer_initial_room.validated_data.get("hotel", None)
         reports = RoomReportGenerate.room_report(hotel)
-        serializer_room = RoomReportInitialModelSerializer(data=reports, many=True)
+        serializer_room = RoomReportModelSerializer(data=reports, many=True)
         serializer_room.is_valid(raise_exception=True)
         serializer_room.save()
         return Response(serializer_room.validated_data, status=status.HTTP_201_CREATED)
 
 
 class HotelInitialModelViewSet(
-    mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
 ):
     serializer_class = HotelInitialModelSerializer
     queryset = HotelReport.objects.filter(
