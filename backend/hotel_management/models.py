@@ -20,12 +20,18 @@ class Hotel(ModelsManager):
     description = models.TextField()
     review = GenericRelation(AbstractReview)
 
+    def __str__(self):
+        return str(self.name)
+
 
 class Location(ModelsManager):
     city = models.CharField(max_length=250)
     country = models.CharField(max_length=250)
     street = models.CharField(max_length=250)
     state = models.CharField(max_length=250)
+
+    def __str__(self):
+        return f"{self.city}, {self.country}, {self.street}"
 
 
 class RoomQuerySet(QuerySet):
@@ -51,6 +57,9 @@ class Room(ModelsManager):
     review = GenericRelation(AbstractReview)
 
     objects = RoomQuerySet.as_manager()
+
+    def __str__(self):
+        return str(self.room_number)
 
     @property
     def is_available_status(self) -> bool:
