@@ -5,7 +5,9 @@ from rest_framework.test import APITestCase
 
 from booking.models import Booking
 from hotel_management.models import Location, Hotel, Room
-from .reports_generation import HotelReportGenerate, RoomReportGenerate
+from .room_reports import RoomReportGenerate
+from .booking_reports import BookingReportGenerate
+from .hotel_reports import HotelReportGenerate
 
 
 class ReportApiTestCase(APITestCase):
@@ -41,21 +43,33 @@ class ReportApiTestCase(APITestCase):
             check_in="2023-12-06",
             check_out="2023-12-13",
             room=self.create_room,
+            phone="+48713589849",
         )
         self.create_booking_2 = Booking.objects.create(
             user=self.create_admin,
             check_in="2023-12-15",
             check_out="2023-12-17",
             room=self.create_room,
+            phone="+48713589849",
         )
         self.create_booking_3 = Booking.objects.create(
             user=self.create_admin,
             check_in="2023-12-18",
             check_out="2023-12-22",
             room=self.create_room,
+            phone="+48713589849",
         )
 
-    def test_generate_booking_report(self):
+    def test_generate_booking_reports(self):
+        generate = BookingReportGenerate.generate_booking_report("name")
+        self.assertEqual(generate.popular_countries, "PL")
+        self.assertEqual(generate.avg_duration.days, 4)
+
+    def test_generate_hotel_reports(self):
+        generate = HotelReportGenerate.hotel_report("name")
+        self.assertEqual(generate.count_rooms, 4)
+
+    def test_admin_generate_booking_reports(self):
         self.client.login(username="root", password="1234")
 
         create_token = self.client.post(
@@ -67,8 +81,27 @@ class ReportApiTestCase(APITestCase):
 
         get_reports = self.client.post(
             reverse("reports-api:booking-reports-list"),
-            kwargs={"hotel_name": "hotel"},
+            kwargs={"hotel_name": "name"},
+            format="json",
+        )
+        print(get_reports)
+
+        self.assertEqual(get_reports.json(), status.HTTP_201_CREATED)
+
+    def test_admin_generate_hotel_reports(self):
+        self.client.login(username="root", password="1234")
+
+        create_token = self.client.post(
+            reverse("token"), {"username": "root", "password": "1234"}, format="json"
+        )
+
+        access = create_token.json()["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
+
+        get_reports = self.client.post(
+            reverse("reports-api:hotel-reports-list"),
+            kwargs={"hotel_name": "name"},
             format="json",
         )
 
-        self.assertEqual(get_reports.json(), get_reports)
+        self.assertEqual(get_reports.json(), status.HTTP_201_CREATED)

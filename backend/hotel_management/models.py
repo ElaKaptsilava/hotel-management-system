@@ -1,3 +1,5 @@
+import heapq
+
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.db.models import QuerySet
@@ -36,6 +38,8 @@ class Location(ModelsManager):
 
 class RoomQuerySet(QuerySet):
     def with_booking(self):
+        from phone_iso3166.country import phone_country
+
         return self.prefetch_related("booking_set").annotate(
             is_available=models.Case(
                 models.When(
@@ -45,7 +49,7 @@ class RoomQuerySet(QuerySet):
                 ),
                 default=False,
                 output_field=models.BooleanField(),
-            )
+            ),
         )
 
 

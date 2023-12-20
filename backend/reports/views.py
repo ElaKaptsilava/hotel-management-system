@@ -13,11 +13,10 @@ from .serializers import (
     BookingReportInitialModelSerializer,
     BookingReportModelSerializer,
 )
-from .reports_generation import (
-    HotelReportGenerate,
-    RoomReportGenerate,
-    BookingReportGenerate,
-)
+
+from .hotel_reports import HotelReportGenerate
+from .room_reports import RoomReportGenerate
+from .booking_reports import BookingReportGenerate
 
 
 class RoomInitialModelViewSet(
@@ -62,7 +61,7 @@ class HotelInitialModelViewSet(
         serializer_initial_hotel.is_valid(raise_exception=True)
         hotel_name = serializer_initial_hotel.validated_data.get("hotel_name", None)
         report = HotelReportGenerate.hotel_report(hotel_name)
-        serializer_hotel = HotelReportModelSerializer(data=report.__dict__)
+        serializer_hotel = HotelReportModelSerializer(data=report)
         serializer_hotel.is_valid(raise_exception=True)
         serializer_hotel.save()
         return Response(serializer_hotel.validated_data, status=status.HTTP_201_CREATED)
@@ -86,7 +85,7 @@ class BookingReportInitialModelViewSet(
         serializer_initial_hotel.is_valid(raise_exception=True)
         hotel_name = serializer_initial_hotel.validated_data.get("hotel_name", None)
         report = BookingReportGenerate.generate_booking_report(hotel_name)
-        serializer_hotel = BookingReportModelSerializer(data=report.__dict__)
+        serializer_hotel = BookingReportModelSerializer(data=report)
         serializer_hotel.is_valid(raise_exception=True)
         serializer_hotel.save()
         return Response(serializer_hotel.validated_data, status=status.HTTP_201_CREATED)
