@@ -13,6 +13,9 @@ import datetime
 from pathlib import Path
 import os
 
+import sentry_sdk
+from sentry_sdk.crons import monitor
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -78,6 +81,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     # "DEFAULT_AUTHENTICATION_CLASSES": (
     #     "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -211,9 +215,6 @@ if DEBUG:
     import mimetypes
 
     mimetypes.add_type("application/javascript", ".js", True)
-
-import sentry_sdk
-from sentry_sdk.crons import monitor
 
 sentry_sdk.init(
     dsn="https://746802836e650a6c9d3af12c0df11eab@o4506400042844160.ingest.sentry.io/4506400044417024",

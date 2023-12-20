@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from hotel_management.models import Hotel
-from reports.models import HotelReport, RoomReport
+from reports.models import HotelReport, RoomReport, BookingReport
 
 
 class RoomReportInitialModelSerializer(serializers.ModelSerializer):
@@ -51,3 +51,23 @@ class HotelReportModelSerializer(serializers.ModelSerializer):
         model = HotelReport
         fields = "__all__"
         read_only_fields = ["generated", "hotel_occupancy_percentage"]
+
+
+class BookingReportModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookingReport
+        fields = "__all__"
+        read_only_fields = ["generated"]
+
+
+class BookingReportInitialModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookingReport
+        fields = "__all__"
+        read_only_fields = [
+            "count_booking",
+            "avg_duration",
+            "popular_countries",
+            "amount_of_occupied",
+            "generated",
+        ]

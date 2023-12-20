@@ -34,7 +34,8 @@ class HotelReportRepr:
 class BookingReport:
     """Data class represents a single booking's report"""
 
-    hotel: str
-    room: int
-    arrival: date
-    check_out: date
+    hotel_name: str
+    count_booking: int
+    avg_duration: date
+    popular_countries: str
+    amount_of_occupied: int

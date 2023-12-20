@@ -42,8 +42,20 @@ class ReportApiTestCase(APITestCase):
             check_out="2023-12-13",
             room=self.create_room,
         )
+        self.create_booking_2 = Booking.objects.create(
+            user=self.create_admin,
+            check_in="2023-12-15",
+            check_out="2023-12-17",
+            room=self.create_room,
+        )
+        self.create_booking_3 = Booking.objects.create(
+            user=self.create_admin,
+            check_in="2023-12-18",
+            check_out="2023-12-22",
+            room=self.create_room,
+        )
 
-    def test_room_report(self):
+    def test_generate_booking_report(self):
         self.client.login(username="root", password="1234")
 
         create_token = self.client.post(
@@ -54,55 +66,9 @@ class ReportApiTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
 
         get_reports = self.client.post(
-            reverse("reports-api:room-reports-list"),
-            kwargs={"hotel": self.create_hotel},
+            reverse("reports-api:booking-reports-list"),
+            kwargs={"hotel_name": "hotel"},
             format="json",
         )
-        print(get_reports)
-        print(get_reports.json())
-        self.assertEqual(get_reports.json(), get_reports)
 
-    # def test_should_return_403_for_authenticated_user(self):
-    #     self.client.login(username="user", password="1234")
-    #     create_token = self.client.post(
-    #         reverse("token"), {"username": "user", "password": "1234"}, format="json"
-    #     )
-    #     access = create_token.json()["access"]
-    #     self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
-    #
-    #     get_reports = self.client.get(reverse("reports:hotel-reports"), format="json")
-    #
-    #     self.assertEqual(
-    #         get_reports.json()["detail"],
-    #         "You do not have permission to perform this action.",
-    #     )
-    #     self.assertEqual(get_reports.status_code, status.HTTP_403_FORBIDDEN)
-    #
-    # def test_should_return_reports_for_authenticated_admin(self):
-    #     self.client.login(username="root", password="1234")
-    #     create_token = self.client.post(
-    #         reverse("token"), {"username": "root", "password": "1234"}, format="json"
-    #     )
-    #     access = create_token.json()["access"]
-    #     self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
-    #
-    #     get_reports = self.client.get(reverse("reports:hotel-reports"))
-    #     get_hotel = self.client.get(
-    #         reverse(
-    #             "hotel-management:hotels-detail", kwargs={"pk": self.create_hotel.id}
-    #         )
-    #     )
-    #
-    #     required = [
-    #         {
-    #             "hotel": get_hotel.json(),
-    #             "avg_rate": None,
-    #             "count_rooms": 1,
-    #             "amount_of_reserved": 0,
-    #             "amount_of_available": 1,
-    #             "hotel_occupancy_percentage": 0,
-    #         }
-    #     ]
-    #
-    #     self.assertEqual(get_reports.json(), required)
-    #     self.assertEqual(get_reports.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(get_reports.json(), get_reports)

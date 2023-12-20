@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from hotel_management.models import Hotel, Room
@@ -24,5 +25,15 @@ class RoomReport(models.Model):
     amount_of_booking = models.IntegerField(null=True, blank=True)
     avg_rate = models.FloatField(null=True, blank=True)
     next_arrival = models.DateField(null=True, blank=True)
+
+    generated = models.DateTimeField(auto_now=True)
+
+
+class BookingReport(models.Model):
+    hotel_name = models.CharField(max_length=256)
+    count_booking = models.PositiveIntegerField()
+    avg_duration = models.DateField(null=True, blank=True)
+    popular_countries = models.CharField(max_length=10, null=True)
+    amount_of_occupied = models.IntegerField()
 
     generated = models.DateTimeField(auto_now=True)

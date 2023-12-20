@@ -12,7 +12,7 @@ class HotelManager(admin.ModelAdmin):
 
 
 @admin.register(Location)
-class HotelManager(admin.ModelAdmin):
+class LocationManager(admin.ModelAdmin):
     list_display = ("city", "country", "street", "state")
     list_filter = ("city", "country")
     sortable_by = "country"
@@ -20,7 +20,7 @@ class HotelManager(admin.ModelAdmin):
 
 
 @admin.register(Room)
-class HotelManager(admin.ModelAdmin):
+class RoomManager(admin.ModelAdmin):
     list_display = ("hotel", "room_number", "prise_per_day", "is_available_status")
     sortable_by = "room_number"
     ordering = ("room_number",)

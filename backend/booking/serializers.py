@@ -9,9 +9,17 @@ from .room_locking import RoomLocking
 class BookingModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = ["id", "is_active_status", "user", "check_in", "check_out", "room"]
+        fields = [
+            "id",
+            "is_active_status",
+            "user",
+            "check_in",
+            "check_out",
+            "room",
+            "duration",
+        ]
 
     @transaction.atomic
     def create(self, validated_data):
-        is_reserved_room = RoomLocking.is_available(valid_data=validated_data)
+        RoomLocking.is_available(valid_data=validated_data)
         return Booking.objects.create(**validated_data)

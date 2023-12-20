@@ -28,6 +28,13 @@ class Booking(models.Model):
     check_out = models.DateField(default=timezone.now)
     room = models.ForeignKey(hotel_models.Room, on_delete=models.CASCADE, null=True)
     phone = PhoneNumberField(null=True, blank=True)
+    duration = models.GeneratedField(
+        expression=models.F("check_out") - models.F("check_in"),
+        output_field=models.DurationField(),
+        db_persist=True,
+        null=True,
+        blank=True,
+    )
 
     objects = BookingQuerySet.as_manager()
 
