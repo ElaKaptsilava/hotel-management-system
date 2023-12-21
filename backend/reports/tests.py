@@ -15,15 +15,12 @@ class ReportApiTestCase(APITestCase):
         self.create_admin = User.objects.create_superuser(
             username="root", password="1234", email="root@gmail.com"
         )
-        self.create_user = User.objects.create_user(
-            username="user", password="1234", email="root@gmail.com"
-        )
 
         self.create_location = Location.objects.create(
             city="city", country="country", street="street", state="state"
         )
         self.create_hotel = Hotel.objects.create(
-            name="name", location=self.create_location, description="About hotel."
+            name="hotel", location=self.create_location, description="About hotel."
         )
         self.create_room = Room.objects.create(
             room_number=1,
@@ -61,12 +58,12 @@ class ReportApiTestCase(APITestCase):
         )
 
     def test_generate_booking_reports(self):
-        generate = BookingReportGenerate.generate_booking_report("name")
+        generate = BookingReportGenerate.generate_booking_report("hotel")
         self.assertEqual(generate.popular_countries, "PL")
         self.assertEqual(generate.avg_duration.days, 4)
 
     def test_generate_hotel_reports(self):
-        generate = HotelReportGenerate.hotel_report("name")
+        generate = HotelReportGenerate.hotel_report("hotel")
         self.assertEqual(generate.count_rooms, 4)
 
     def test_admin_generate_booking_reports(self):
@@ -80,11 +77,9 @@ class ReportApiTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
 
         get_reports = self.client.post(
-            reverse("reports-api:booking-reports-list"),
-            kwargs={"hotel_name": "name"},
+            reverse("reports:booking-reports-list", kwargs={"hotel_name": "hotel"}),
             format="json",
         )
-        print(get_reports)
 
         self.assertEqual(get_reports.json(), status.HTTP_201_CREATED)
 
@@ -99,8 +94,7 @@ class ReportApiTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
 
         get_reports = self.client.post(
-            reverse("reports-api:hotel-reports-list"),
-            kwargs={"hotel_name": "name"},
+            reverse("reports:hotel-reports-list", kwargs={"hotel_name": "hotel"}),
             format="json",
         )
 

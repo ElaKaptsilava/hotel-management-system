@@ -4,8 +4,15 @@ from django.db import models
 from hotel_management.models import Hotel, Room
 
 
-class HotelReport(models.Model):
+class ReportAbstractModel(models.Model):
     hotel_name = models.CharField(max_length=256, default="hotel")
+    generated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class HotelReport(ReportAbstractModel):
     avg_rate = models.FloatField(null=True, blank=True)
     count_rooms = models.IntegerField()
     amount_of_occupied = models.IntegerField()
@@ -16,7 +23,12 @@ class HotelReport(models.Model):
         db_persist=True,
     )
 
-    generated = models.DateTimeField(auto_now=True)
+
+class BookingReport(ReportAbstractModel):
+    count_booking = models.PositiveIntegerField()
+    duration_avg = models.DurationField(null=True, blank=True)
+    popular_countries = models.CharField(max_length=10, null=True)
+    amount_of_occupied = models.IntegerField()
 
 
 class RoomReport(models.Model):
@@ -25,15 +37,5 @@ class RoomReport(models.Model):
     amount_of_booking = models.IntegerField(null=True, blank=True)
     avg_rate = models.FloatField(null=True, blank=True)
     next_arrival = models.DateField(null=True, blank=True)
-
-    generated = models.DateTimeField(auto_now=True)
-
-
-class BookingReport(models.Model):
-    hotel_name = models.CharField(max_length=256)
-    count_booking = models.PositiveIntegerField()
-    duration_avg = models.DurationField(null=True, blank=True)
-    popular_countries = models.CharField(max_length=10, null=True)
-    amount_of_occupied = models.IntegerField()
 
     generated = models.DateTimeField(auto_now=True)

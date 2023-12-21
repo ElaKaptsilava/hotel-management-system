@@ -71,7 +71,7 @@ urlpatterns = [
     ),
     path(
         "reports-api/",
-        include((reports_router.urls, "reports-api"), namespace="reports-api"),
+        include((reports_router.urls, "reports-api"), namespace="reports"),
     ),
     # JWT token views
     path("token/", TokenObtainPairView.as_view(), name="token"),

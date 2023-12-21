@@ -26,7 +26,7 @@ class BookingReportGenerate:
         repr_booking_reports = cls.get_booking_queryset_to_repr(hotel_name)
         repr_booking_reports.update({"hotel_name": hotel_name})
         report = BookingReport(**repr_booking_reports)
-        return report.__dict__
+        return report
 
     @classmethod
     def get_booking_queryset_to_repr(cls, hotel_name):

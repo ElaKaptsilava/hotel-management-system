@@ -8,6 +8,8 @@ from reports.views import (
 
 router = DefaultRouter()
 
+app_name = "reports"
+
 router.register(r"hotel-reports", HotelInitialModelViewSet, basename="hotel-reports")
 router.register(r"room-reports", RoomInitialModelViewSet, basename="room-reports")
 router.register(

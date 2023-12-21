@@ -41,9 +41,9 @@ class HotelInitialModelSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         hotel_name = data.get("hotel_name")
-        if not Hotel.objects.filter(name=hotel_name).exists():
-            raise serializers.ValidationError("The hotel doesn't exist yet.")
-        return data
+        if Hotel.objects.filter(name=hotel_name).exists():
+            return data
+        raise serializers.ValidationError(f"The hotel: {hotel_name} doesn't exist yet.")
 
 
 class HotelReportModelSerializer(serializers.ModelSerializer):
@@ -74,6 +74,6 @@ class BookingReportInitialModelSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         hotel_name = data.get("hotel_name")
-        if not Hotel.objects.filter(name=hotel_name).exists():
-            raise serializers.ValidationError("The hotel doesn't exist yet.")
-        return data
+        if Hotel.objects.filter(name=hotel_name).exists():
+            return data
+        raise serializers.ValidationError(f"The hotel: {hotel_name} doesn't exist yet.")

@@ -28,7 +28,7 @@ class HotelReportGenerate:
             hotel.amount_of_occupied,
             hotel.count_discounts,
         )
-        return reports.__dict__
+        return reports
 
     @staticmethod
     def get_hotel_queryset(hotel_name):
