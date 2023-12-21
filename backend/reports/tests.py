@@ -5,6 +5,7 @@ from rest_framework.test import APITestCase
 
 from booking.models import Booking
 from hotel_management.models import Location, Hotel, Room
+from .models import HotelReport
 from .room_reports import RoomReportGenerate
 from .booking_reports import BookingReportGenerate
 from .hotel_reports import HotelReportGenerate
@@ -56,6 +57,27 @@ class ReportApiTestCase(APITestCase):
             room=self.create_room,
             phone="+48713589849",
         )
+        self.create_location_hotel2 = Location.objects.create(
+            city="city2", country="country2", street="street2", state="state2"
+        )
+        self.create_hotel_2 = Hotel.objects.create(
+            name="hotel2",
+            location=self.create_location_hotel2,
+            description="About hotel2.",
+        )
+        self.create_room_hotel2 = Room.objects.create(
+            room_number=5,
+            prise_per_day=100.00,
+            phone_number="+48713589849",
+            hotel=self.create_hotel_2,
+        )
+
+        self.create_booking_hotel2 = Booking.objects.create(
+            user=self.create_admin,
+            check_in="2023-12-29",
+            check_out="2023-12-30",
+            room=self.create_room_hotel2,
+        )
 
     def test_generate_booking_reports(self):
         generate = BookingReportGenerate.generate_booking_report("hotel")
@@ -77,11 +99,13 @@ class ReportApiTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
 
         get_reports = self.client.post(
-            reverse("reports:booking-reports-list", kwargs={"hotel_name": "hotel"}),
+            reverse("reports:booking-reports-list"),
+            {"hotel_name": "hotel"},
             format="json",
         )
 
-        self.assertEqual(get_reports.json(), status.HTTP_201_CREATED)
+        self.assertEqual(get_reports.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(get_reports.json()["amount_of_occupied"], 1)
 
     def test_admin_generate_hotel_reports(self):
         self.client.login(username="root", password="1234")
@@ -94,8 +118,49 @@ class ReportApiTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
 
         get_reports = self.client.post(
-            reverse("reports:hotel-reports-list", kwargs={"hotel_name": "hotel"}),
+            reverse("reports:hotel-reports-list"),
+            {"hotel_name": "hotel"},
+            format="json",
+        )
+        hotel_report = HotelReport.objects.get(pk=1)
+
+        self.assertEqual(get_reports.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(hotel_report.hotel_occupancy_percentage, 25)
+
+    def test_admin_generate_booking_reports_when_booking_without_phone_number(self):
+        self.client.login(username="root", password="1234")
+
+        create_token = self.client.post(
+            reverse("token"), {"username": "root", "password": "1234"}, format="json"
+        )
+
+        access = create_token.json()["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
+
+        get_reports = self.client.post(
+            reverse("reports:booking-reports-list"),
+            {"hotel_name": "hotel2"},
             format="json",
         )
 
-        self.assertEqual(get_reports.json(), status.HTTP_201_CREATED)
+        self.assertEqual(get_reports.status_code, status.HTTP_201_CREATED)
+        self.assertIsNone(get_reports.json()["popular_countries"])
+
+    def test_admin_generate_room_reports(self):
+        self.client.login(username="root", password="1234")
+
+        create_token = self.client.post(
+            reverse("token"), {"username": "root", "password": "1234"}, format="json"
+        )
+
+        access = create_token.json()["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
+
+        get_reports = self.client.post(
+            reverse("reports:room-reports-list"),
+            {"hotel": self.create_hotel.pk},
+            format="json",
+        )
+        print(get_reports.json())
+
+        self.assertEqual(get_reports.status_code, status.HTTP_201_CREATED)

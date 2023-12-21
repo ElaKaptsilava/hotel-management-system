@@ -27,7 +27,7 @@ class HotelReport(ReportAbstractModel):
 class BookingReport(ReportAbstractModel):
     count_booking = models.PositiveIntegerField()
     duration_avg = models.DurationField(null=True, blank=True)
-    popular_countries = models.CharField(max_length=10, null=True)
+    popular_countries = models.CharField(max_length=10, null=True, blank=True)
     amount_of_occupied = models.IntegerField()
 
 

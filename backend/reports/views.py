@@ -40,7 +40,7 @@ class RoomInitialModelViewSet(
         serializer_room = RoomReportModelSerializer(data=reports, many=True)
         serializer_room.is_valid(raise_exception=True)
         serializer_room.save()
-        return Response(serializer_room.validated_data, status=status.HTTP_201_CREATED)
+        return Response(serializer_room.data, status=status.HTTP_201_CREATED)
 
 
 class HotelInitialModelViewSet(
@@ -64,7 +64,7 @@ class HotelInitialModelViewSet(
         serializer_hotel = HotelReportModelSerializer(data=report.__dict__)
         serializer_hotel.is_valid(raise_exception=True)
         serializer_hotel.save()
-        return Response(serializer_hotel.validated_data, status=status.HTTP_201_CREATED)
+        return Response(serializer_hotel.initial_data, status=status.HTTP_201_CREATED)
 
 
 class BookingReportInitialModelViewSet(
@@ -88,4 +88,4 @@ class BookingReportInitialModelViewSet(
         serializer_hotel = BookingReportModelSerializer(data=report.__dict__)
         serializer_hotel.is_valid(raise_exception=True)
         serializer_hotel.save()
-        return Response(serializer_hotel.validated_data, status=status.HTTP_201_CREATED)
+        return Response(serializer_hotel.data, status=status.HTTP_201_CREATED)

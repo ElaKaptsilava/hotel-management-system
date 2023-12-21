@@ -43,7 +43,7 @@ class HotelInitialModelSerializer(serializers.ModelSerializer):
         hotel_name = data.get("hotel_name")
         if Hotel.objects.filter(name=hotel_name).exists():
             return data
-        raise serializers.ValidationError(f"The hotel: {hotel_name} doesn't exist yet.")
+        raise serializers.ValidationError(f"The hotel doesn't exist yet.")
 
 
 class HotelReportModelSerializer(serializers.ModelSerializer):
@@ -76,4 +76,4 @@ class BookingReportInitialModelSerializer(serializers.ModelSerializer):
         hotel_name = data.get("hotel_name")
         if Hotel.objects.filter(name=hotel_name).exists():
             return data
-        raise serializers.ValidationError(f"The hotel: {hotel_name} doesn't exist yet.")
+        raise serializers.ValidationError(f"The hotel doesn't exist yet.")

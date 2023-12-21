@@ -23,8 +23,8 @@ class RoomReportGenerate:
         reports = []
         for room in cls.get_room_queryset(rooms_instance=rooms_instance):
             report = RoomReportRepr(
-                hotel.id,
-                room.id,
+                hotel.pk,
+                room.pk,
                 room.amount_of_booking,
                 room.avg_rate if room.avg_rate is not None else 0,
                 room.next_arrival,
