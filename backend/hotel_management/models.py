@@ -38,8 +38,6 @@ class Location(ModelsManager):
 
 class RoomQuerySet(QuerySet):
     def with_booking(self):
-        from phone_iso3166.country import phone_country
-
         return self.prefetch_related("booking_set").annotate(
             is_available=models.Case(
                 models.When(

@@ -1,79 +1,53 @@
 from rest_framework import serializers
 
-from hotel_management.models import Hotel
-from reports.models import HotelReport, RoomReport, BookingReport
+from hotel_management.models import Room
 
 
-class RoomReportInitialModelSerializer(serializers.ModelSerializer):
+class RoomInitialModelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RoomReport
-        fields = "__all__"
-        read_only_fields = [
-            "id",
-            "room",
-            "avg_rate",
-            "amount_of_booking",
-            "next_arrival",
-            "generated",
+        model = Room
+        fields = [
+            "room_number",
+            "hotel",
+            "prise_per_day",
+            "phone_number",
         ]
 
 
-class RoomReportModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RoomReport
-        fields = "__all__"
-        read_only_fields = ["generated"]
+class RoomReportSerializer(serializers.Serializer):
+    is_available = serializers.BooleanField()
+
+    hotel_name = serializers.CharField(max_length=256)
+    room_number = serializers.IntegerField()
+
+    count_rate = serializers.IntegerField()
+    avg_rate = serializers.DecimalField(max_digits=5, decimal_places=2)
+
+    amount_of_booking = serializers.IntegerField()
+    next_arrival = serializers.DateField(allow_null=True)
+    generated = serializers.DateTimeField()
 
 
-class HotelInitialModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = HotelReport
-        fields = "__all__"
-        read_only_fields = [
-            "id",
-            "avg_rate",
-            "count_rooms",
-            "amount_of_occupied",
-            "hotel_occupancy_percentage",
-            "count_discounts",
-            "generated",
-        ]
+class HotelReportSerializer(serializers.Serializer):
+    hotel_name = serializers.CharField(max_length=256)
 
-    def validate(self, data):
-        hotel_name = data.get("hotel_name")
-        if Hotel.objects.filter(name=hotel_name).exists():
-            return data
-        raise serializers.ValidationError(f"The hotel doesn't exist yet.")
+    number_of_ratings_for_hotel = serializers.IntegerField()
+    hotel_rating: serializers.FloatField()
+    hotel_occupancy_percentage = serializers.IntegerField()
+
+    count_rooms = serializers.IntegerField()
+    rooms_rating = serializers.IntegerField()
+    number_of_ratings_for_rooms = serializers.IntegerField()
+    amount_of_occupied = serializers.IntegerField()
+    count_discounts = serializers.IntegerField()
+
+    generated = serializers.DateTimeField()
 
 
-class HotelReportModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = HotelReport
-        fields = "__all__"
-        read_only_fields = ["generated", "hotel_occupancy_percentage"]
-
-
-class BookingReportModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = BookingReport
-        fields = "__all__"
-        read_only_fields = ["generated"]
-
-
-class BookingReportInitialModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = BookingReport
-        fields = "__all__"
-        read_only_fields = [
-            "count_booking",
-            "duration_avg",
-            "popular_countries",
-            "amount_of_occupied",
-            "generated",
-        ]
-
-    def validate(self, data):
-        hotel_name = data.get("hotel_name")
-        if Hotel.objects.filter(name=hotel_name).exists():
-            return data
-        raise serializers.ValidationError(f"The hotel doesn't exist yet.")
+class BookingReportSerializer(serializers.Serializer):
+    hotel = serializers.CharField(max_length=256)
+    count_booking = serializers.IntegerField()
+    avg_duration = serializers.FloatField()
+    popular_countries = serializers.CharField(max_length=256, allow_null=True)
+    amount_of_occupied = serializers.IntegerField()
+    generated = serializers.DateTimeField()

@@ -1,7 +1,7 @@
-from django.db import transaction
+from django.db import transaction, models
 from rest_framework import serializers
+from rest_framework.exceptions import APIException
 
-from hotel_management.models import Room
 from .models import Booking
 from .room_locking import RoomLocking
 
@@ -18,6 +18,25 @@ class BookingModelSerializer(serializers.ModelSerializer):
             "room",
             "duration",
         ]
+
+    def validate(self, data):
+        room = data.get("room")
+        is_available = room.booking_set.filter(
+            models.Q(
+                check_in__lte=data.get("check_in"),
+                check_out__gt=data.get("check_in"),
+            )
+            or models.Q(
+                check_in__lt=data.get("check_out"),
+                check_out__gte=data.get("check_out"),
+            )
+        ).exists()
+        if is_available:
+            raise APIException(
+                f"This room is occupied from {data.get('check_in')} to {data.get('check_out')}."
+                f"You should choose another date"
+            )
+        return data
 
     @transaction.atomic
     def create(self, validated_data):
