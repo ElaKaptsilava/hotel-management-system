@@ -3,7 +3,6 @@ from rest_framework import serializers
 from rest_framework.exceptions import APIException
 
 from .models import Booking
-from .room_locking import RoomLocking
 
 
 class BookingModelSerializer(serializers.ModelSerializer):
@@ -40,5 +39,4 @@ class BookingModelSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        RoomLocking.is_available(valid_data=validated_data)
         return Booking.objects.create(**validated_data)

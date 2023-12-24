@@ -1,4 +1,5 @@
 from django.db import transaction
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, status, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -14,6 +15,8 @@ from .serializers import (
     RoomInitialModelSerializer,
 )
 
+from .filters import HotelFilters
+
 
 class HotelReportApiView(
     mixins.RetrieveModelMixin, mixins.ListModelMixin, GenericViewSet
@@ -21,6 +24,8 @@ class HotelReportApiView(
     queryset = Hotel.objects.all()
     serializer_class = HotelModelSerializer
     permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = HotelFilters
 
     @action(methods=["GET"], detail=True, url_name="hotel-reports")
     def get_hotel_reports(self, request, pk):
@@ -54,13 +59,3 @@ class RoomReportApiView(
         )
         serializer = HotelReportSerializer(data=room_report.__dict__)
         return Response(serializer.initial_data, status=status.HTTP_201_CREATED)
-
-
-#
-# class BookingReportApiView(APIView):
-#     permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
-#
-#     def get(self, request):
-#         data = BookingReportGenerate.booking_report()
-#         serializer = BookingReportModelSerializer(instance=data, many=True)
-#         return Response(data=serializer.data, status=status.HTTP_201_CREATED)

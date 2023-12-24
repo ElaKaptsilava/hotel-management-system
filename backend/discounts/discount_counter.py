@@ -23,7 +23,7 @@ class DiscountCounter:
                 cls.calculate_discount_if_percentage(
                     value=get_percentage_value, room=room
                 )
-            else:
+            if get_value:
                 cls.change_price_per_day_with_discount(discount=get_value, room=room)
 
     @classmethod

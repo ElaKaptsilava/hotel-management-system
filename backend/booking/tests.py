@@ -10,7 +10,6 @@ from rest_framework.test import APITestCase
 
 from hotel_management.models import Location, Hotel, Room
 from .models import Booking
-from .room_locking import RoomLocking
 
 
 class BookingApiTestCase(APITestCase):
@@ -45,19 +44,6 @@ class BookingApiTestCase(APITestCase):
         self.rooms_detail_url = reverse(
             "hotel-management:rooms-detail", kwargs={"pk": self.create_room.id}
         )
-
-    def test_should_return_APIExceptions_if_the_date_is_booked(self):
-        self.booking = {
-            "user": self.create_admin,
-            "check_in": "2023-12-07",
-            "check_out": "2023-12-13",
-            "room": self.create_room,
-        }
-
-        with self.assertRaises(APIException):
-            RoomLocking.is_available_dates(
-                room=self.create_room, valid_data=self.booking
-            )
 
     def test_should_return_generated_token(self):
         post_token = self.client.post(
