@@ -23,6 +23,10 @@ class Hotel(ModelsManager):
     def __str__(self):
         return str(self.name)
 
+    def __repr__(self):
+        class_name = type(self).__name__
+        return f"{class_name}(name={self.name!r})"
+
 
 class Location(ModelsManager):
     city = models.CharField(max_length=250)
@@ -32,6 +36,10 @@ class Location(ModelsManager):
 
     def __str__(self):
         return f"{self.city}, {self.country}, {self.street}"
+
+    def __repr__(self):
+        class_name = type(self).__name__
+        return f"{class_name}(pk={self.pk!r}, city={self.city!r}, country={self.country!r}, street={self.street!r})"
 
 
 class RoomQuerySet(QuerySet):
@@ -60,6 +68,10 @@ class Room(ModelsManager):
 
     def __str__(self):
         return str(self.room_number)
+
+    def __repr__(self):
+        class_name = type(self).__name__
+        return f"{class_name}({self.room_number!r}, {self.hotel!r})"
 
     @property
     def is_available_status(self) -> bool:

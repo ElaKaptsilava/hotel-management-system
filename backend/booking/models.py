@@ -38,6 +38,10 @@ class Booking(models.Model):
 
     objects = BookingQuerySet.as_manager()
 
+    def __repr__(self):
+        class_name = type(self).__name__
+        return f"{class_name}(user={self.user.name!r}, room={self.room!r})"
+
     @property
     def is_active_status(self) -> bool:
         if hasattr(self, "is_active"):

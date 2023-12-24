@@ -15,3 +15,10 @@ class AbstractReview(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
+
+    def __repr__(self):
+        class_name = type(self).__name__
+        return f"{class_name}(user={self.user!r}, pk={self.pk!r}, title={self.title!r})"
+
+    def __str__(self):
+        return f"{self.title!s}"
