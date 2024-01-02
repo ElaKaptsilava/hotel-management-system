@@ -13,6 +13,9 @@ import datetime
 from pathlib import Path
 import os
 
+import sentry_sdk
+from sentry_sdk.crons import monitor
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -44,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     # Third party packages
     "debug_toolbar",
     "rest_framework",
@@ -77,13 +81,11 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
-    # "DEFAULT_AUTHENTICATION_CLASSES": (
-    #     "rest_framework_simplejwt.authentication.JWTAuthentication",
-    # ),
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": 100,
+    "PAGE_SIZE": 20,
 }
 
 SIMPLE_JWT = {
@@ -210,3 +212,14 @@ if DEBUG:
     import mimetypes
 
     mimetypes.add_type("application/javascript", ".js", True)
+
+sentry_sdk.init(
+    dsn="https://746802836e650a6c9d3af12c0df11eab@o4506400042844160.ingest.sentry.io/4506400044417024",
+    traces_sample_rate=1.0,
+    profiles_sample_rate=1.0,
+)
+
+
+@monitor(monitor_slug="hotel_management_system")
+def tell_the_world(msg):
+    print(msg)

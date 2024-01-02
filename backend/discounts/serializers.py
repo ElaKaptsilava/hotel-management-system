@@ -1,3 +1,5 @@
+from django.db import transaction
+
 from .models import Discount
 
 from rest_framework import serializers
@@ -9,6 +11,7 @@ class DiscountModelSerializer(serializers.ModelSerializer):
         model = Discount
         fields = "__all__"
 
+    @transaction.atomic
     def create(self, validated_data):
         DiscountCounter.is_percentage(valid_data=validated_data)
         create_discount = Discount.objects.create(
