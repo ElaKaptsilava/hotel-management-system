@@ -28,4 +28,3 @@ Clone the reposotory:<br/>
 Start with docker-compose:<br/>
 ```docker-compose build```<br/>
 ```docker-compose up```<br/>
-
