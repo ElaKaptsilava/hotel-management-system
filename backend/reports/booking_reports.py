@@ -5,10 +5,9 @@ from datetime import date
 
 from django.db import models
 from django.utils import duration, timezone
-from phone_iso3166.country import phone_country, network_country
+from phone_iso3166.country import phone_country
 
 from booking.models import Booking
-from hotel_management.models import Hotel
 
 
 @dataclass
@@ -35,7 +34,7 @@ class BookingReportGenerate:
         booking_queryset = Booking.objects.filter(
             room__hotel__pk=instance_hotel.pk, check_in__month=timezone.now().month
         )
-        popular_countries = cls.find_the_most_popular_countries_which_booking(
+        popular_countries = cls.find_the_most_popular_countries_for_booking(
             booking_queryset
         )
         booking_report_to_repr = cls.get_booking_aggregate(booking_queryset)
@@ -61,15 +60,14 @@ class BookingReportGenerate:
             )
         )
         aggregate_queryset.update({"amount_of_occupied": amount_of_occupied.count()})
-        aggregate_queryset["avg_duration"] //= 86400
         return aggregate_queryset
 
     @staticmethod
-    def find_the_most_popular_countries_which_booking(booking_queryset):
+    def find_the_most_popular_countries_for_booking(booking_queryset):
         phone_queryset = booking_queryset.filter(phone__isnull=False).values_list(
             "phone"
         )
-        if phone_queryset.exists():
+        if phone_queryset:
             booking_countries = [phone_country(phone) for phone in phone_queryset]
             countries_occurs = Counter(booking_countries)
             popular_country = heapq.nlargest(

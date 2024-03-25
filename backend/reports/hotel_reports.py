@@ -39,9 +39,9 @@ class HotelReportGenerate:
             ),
             "generated": timezone.now(),
         }
-        hotel_queryset.update(rooms_queryset)
-        hotel_queryset.update(complete_report)
-        reports = HotelReportRepr(**hotel_queryset)
+        complete_report.update(hotel_queryset)
+        complete_report.update(rooms_queryset)
+        reports = HotelReportRepr(**complete_report)
         return reports
 
     @staticmethod
@@ -67,7 +67,7 @@ class HotelReportGenerate:
                 booking__check_out__gt=timezone.now(),
             )
         )
-        return len(filter_by_occupied_room)
+        return filter_by_occupied_room.count()
 
     @staticmethod
     def get_hotel_queryset(hotel_instance):

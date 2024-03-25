@@ -6,15 +6,17 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from hotel_management.models import Hotel, Room
-from hotel_management.serializers import HotelModelSerializer, RoomModelSerializer
+from hotel_management.serializers import HotelModelSerializer
 from .booking_reports import BookingReportGenerate
 from .hotel_reports import HotelReportGenerate
-from .room_reports import RoomReportGenerate
+from .room_reports import RoomReportGenerate, RoomsGenerate
 from .serializers import (
     HotelReportSerializer,
     RoomInitialModelSerializer,
+    RoomReportSerializer,
+    RoomsPageReportSerializer,
 )
-
+from .paginations import RoomResultsSetPagination
 from .filters import HotelFilters
 
 
@@ -43,13 +45,19 @@ class HotelReportApiView(
         serializer = HotelReportSerializer(data=booking_report.__dict__)
         return Response(serializer.initial_data, status=status.HTTP_201_CREATED)
 
+    @action(methods=["GET"], detail=True, url_name="get-rooms")
+    def get_rooms(self, request, pk):
+        instance_hotel = self.get_object()
+        rooms = Room.objects.filter(hotel=instance_hotel)
+        serializer = RoomInitialModelSerializer(instance=rooms, many=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class RoomReportApiView(
-    mixins.RetrieveModelMixin, mixins.ListModelMixin, GenericViewSet
-):
+
+class RoomReportApiView(mixins.ListModelMixin, GenericViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomInitialModelSerializer
     permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser]
+    pagination_class = RoomResultsSetPagination
 
     @transaction.atomic
     def retrieve(self, request, *args, **kwargs):
@@ -57,5 +65,15 @@ class RoomReportApiView(
         room_report = RoomReportGenerate.generate_room_report(
             room_instance=room_instance
         )
-        serializer = HotelReportSerializer(data=room_report.__dict__)
+        serializer = RoomReportSerializer(data=room_report.__dict__)
+        return Response(serializer.initial_data, status=status.HTTP_201_CREATED)
+
+    @action(methods=["GET"], detail=False, url_name="rooms-reports")
+    def get_page_room_reports(self, request):
+        rooms_instance = self.paginate_queryset(self.get_queryset())
+        rooms_queryset = Room.objects.filter(
+            id__in=[room.id for room in rooms_instance]
+        )
+        room_report = RoomsGenerate.generate_rooms_report(rooms=rooms_queryset)
+        serializer = RoomsPageReportSerializer(data=room_report.__dict__)
         return Response(serializer.initial_data, status=status.HTTP_201_CREATED)

@@ -67,3 +67,37 @@ class RoomReportGenerate:
             }
         )
         return booking_aggregate
+
+
+@dataclass
+class RoomsReport:
+    """Data class represents a single rooms' report"""
+
+    room_amount: int
+
+    count_rate: int
+    avg_rate: Decimal
+
+    generated: datetime
+
+
+class RoomsGenerate:
+    @classmethod
+    def generate_rooms_report(cls, rooms):
+        review_aggregate = cls.get_review_aggregate(rooms)
+        rooms_aggregate = rooms.aggregate(room_amount=models.Count("id"))
+        complete_report = {
+            "generated": timezone.now(),
+        }
+        complete_report.update(review_aggregate)
+        complete_report.update(rooms_aggregate)
+        room_report = RoomsReport(**complete_report)
+        return room_report
+
+    @staticmethod
+    def get_review_aggregate(room_instance):
+        review_aggregate = room_instance.prefetch_related("review").aggregate(
+            avg_rate=models.Avg("review__rate"),
+            count_rate=models.Count("review__id"),
+        )
+        return review_aggregate

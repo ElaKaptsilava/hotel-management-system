@@ -51,3 +51,12 @@ class BookingReportSerializer(serializers.Serializer):
     popular_countries = serializers.CharField(max_length=256, allow_null=True)
     amount_of_occupied = serializers.IntegerField()
     generated = serializers.DateTimeField()
+
+
+class RoomsPageReportSerializer(serializers.Serializer):
+    room_amount = serializers.IntegerField()
+
+    count_rate = serializers.IntegerField()
+    avg_rate = serializers.DecimalField(max_digits=5, decimal_places=2)
+
+    generated = serializers.DateTimeField()

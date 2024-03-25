@@ -16,6 +16,8 @@ class HotelModelViewSet(viewsets.ModelViewSet):
     queryset = Hotel.objects.all()
     serializer_class = HotelModelSerializer
     permission_classes = [IsAdminOrReadOnly]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["id", "name"]
 
 
 class RoomModelViewSet(viewsets.ModelViewSet):
@@ -30,3 +32,4 @@ class LocationModelViewSet(viewsets.ModelViewSet):
     queryset = Location.objects.all()
     serializer_class = LocationModelSerializer
     permission_classes = [IsAdminOrReadOnly]
+    filter_backends = [DjangoFilterBackend]
