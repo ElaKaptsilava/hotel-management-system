@@ -1,4 +1,4 @@
-FROM python:3.12-alpine
+﻿FROM python:3.12.0-alpine
 
 RUN apk update && apk add python3-dev gcc libc-dev
 
@@ -10,7 +10,7 @@ ADD ./requirements.txt /app/
 RUN pip install -r requirements.txt
 
 ADD ./backend /app/backend
-ADD ./docker /app/docker
+ADD ./docker/backend /app/docker/backend
 
 RUN chmod +x /app/docker/backend/server-entrypoint.sh
 RUN chmod +x /app/docker/backend/worker-entrypoint.sh
