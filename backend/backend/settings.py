@@ -221,3 +221,9 @@ sentry_sdk.init(
 @monitor(monitor_slug="hotel_management_system")
 def tell_the_world(msg):
     print(msg)
+
+
+
+
+
+
