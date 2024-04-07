@@ -1,6 +1,6 @@
 import factory
 from django.contrib.auth.models import User
-from phonenumber_field.phonenumber import PhoneNumber, to_python
+from phonenumber_field.phonenumber import to_python
 
 from .models import Hotel, Location, Room
 import faker

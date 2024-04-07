@@ -1,3 +1,6 @@
+import datetime
+import random
+
 import factory
 
 from .models import Booking
@@ -10,7 +13,9 @@ class BookingFactory(factory.django.DjangoModelFactory):
 
     pk = factory.Sequence(lambda n: n)
     user = factory.SubFactory(UserFactory)
-    check_in = factory.Faker('date')
-    check_out = factory.Faker('date')
+    check_in = factory.Faker('date_this_month')
+    check_out = factory.LazyAttribute(
+        lambda self: self.check_in + datetime.timedelta(days=random.randint(1, 31))
+    )
     room = factory.SubFactory(RoomFactory)
     phone = factory.Faker('phone_number')
