@@ -4,10 +4,12 @@ from dataclasses import dataclass
 from datetime import date
 
 from django.db import models
+from django.db.models import QuerySet
 from django.utils import duration, timezone
 from phone_iso3166.country import phone_country
 
 from booking.models import Booking
+from hotel_management.models import Hotel
 
 
 @dataclass
@@ -24,13 +26,13 @@ class BookingReport:
 
 class BookingReportGenerate:
     @classmethod
-    def generate_booking_report(cls, instance_hotel):
+    def generate_booking_report(cls, instance_hotel: Hotel) -> BookingReport:
         repr_booking_reports = cls.get_booking_queryset_to_repr(instance_hotel)
         report = BookingReport(**repr_booking_reports)
         return report
 
     @classmethod
-    def get_booking_queryset_to_repr(cls, instance_hotel):
+    def get_booking_queryset_to_repr(cls, instance_hotel: Hotel) -> dict:
         booking_queryset = Booking.objects.filter(
             room__hotel__pk=instance_hotel.pk, check_in__month=timezone.now().month
         )
@@ -48,7 +50,7 @@ class BookingReportGenerate:
         return booking_report_to_repr
 
     @classmethod
-    def get_booking_aggregate(cls, booking_queryset):
+    def get_booking_aggregate(cls, booking_queryset: QuerySet) -> dict:
         aggregate_queryset = booking_queryset.aggregate(
             count_booking=models.Count("pk"),
             avg_duration=models.Avg("duration"),
@@ -63,7 +65,7 @@ class BookingReportGenerate:
         return aggregate_queryset
 
     @staticmethod
-    def find_the_most_popular_countries_for_booking(booking_queryset):
+    def find_the_most_popular_countries_for_booking(booking_queryset: QuerySet) -> str | None:
         phone_queryset = booking_queryset.filter(phone__isnull=False).values_list(
             "phone"
         )

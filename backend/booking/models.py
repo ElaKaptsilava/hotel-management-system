@@ -23,10 +23,10 @@ class BookingQuerySet(QuerySet):
 
 
 class Booking(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    check_in = models.DateField(default=timezone.now)
-    check_out = models.DateField(default=timezone.now)
-    room = models.ForeignKey(hotel_models.Room, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, help_text='Select the user who is making the booking.')
+    check_in = models.DateField(default=timezone.now, help_text='Specify the check-in date.')
+    check_out = models.DateField(default=timezone.now, help_text='Specify the check-out date.')
+    room = models.ForeignKey(hotel_models.Room, on_delete=models.CASCADE, null=True, help_text='Specify the room.')
     phone = PhoneNumberField(null=True, blank=True)
     duration = models.GeneratedField(
         expression=models.F("check_out") - models.F("check_in"),
@@ -38,7 +38,7 @@ class Booking(models.Model):
 
     objects = BookingQuerySet.as_manager()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         class_name = type(self).__name__
         return f"{class_name}(user={self.user.name!r}, room={self.room!r})"
 

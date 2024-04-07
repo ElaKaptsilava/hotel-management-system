@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from django.db import models
 from django.utils import timezone
 
+from hotel_management.models import Hotel, Room
+
 
 @dataclass
 class HotelReportRepr:
@@ -26,7 +28,7 @@ class HotelReportRepr:
 
 class HotelReportGenerate:
     @classmethod
-    def generate_hotel_report(cls, instance_hotel):
+    def generate_hotel_report(cls, instance_hotel: Hotel) -> HotelReportRepr:
         instance_rooms = instance_hotel.room_set
         rooms_queryset = cls.get_room_queryset(instance_rooms)
         amount_of_occupied_room = cls.get_amount_of_occupied_room(instance_rooms)
@@ -45,7 +47,7 @@ class HotelReportGenerate:
         return reports
 
     @staticmethod
-    def get_room_queryset(instance_rooms):
+    def get_room_queryset(instance_rooms: models.QuerySet) -> dict:
         room_queryset = instance_rooms.prefetch_related(
             "discount_set", "review"
         ).aggregate(
@@ -60,7 +62,7 @@ class HotelReportGenerate:
         return room_queryset
 
     @staticmethod
-    def get_amount_of_occupied_room(instance_rooms):
+    def get_amount_of_occupied_room(instance_rooms: models.QuerySet) -> int:
         filter_by_occupied_room = instance_rooms.filter(
             models.Q(
                 booking__check_in__lte=timezone.now(),
@@ -70,7 +72,7 @@ class HotelReportGenerate:
         return filter_by_occupied_room.count()
 
     @staticmethod
-    def get_hotel_queryset(hotel_instance):
+    def get_hotel_queryset(hotel_instance: Hotel) -> models.QuerySet:
         hotel_queryset = hotel_instance.review.aggregate(
             number_of_ratings_for_hotel=models.Count("rate"),
             hotel_rating=models.Avg("rate"),

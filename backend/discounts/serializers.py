@@ -12,7 +12,7 @@ class DiscountModelSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     @transaction.atomic
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> Discount:
         DiscountCounter.is_percentage(valid_data=validated_data)
         create_discount = Discount.objects.create(
             value=validated_data.get("value"),

@@ -6,6 +6,8 @@ from decimal import Decimal
 from django.db import models
 from django.utils import timezone
 
+from hotel_management.models import Room
+
 
 @dataclass
 class RoomReportRepr:
@@ -27,7 +29,7 @@ class RoomReportRepr:
 
 class RoomReportGenerate:
     @classmethod
-    def generate_room_report(cls, room_instance):
+    def generate_room_report(cls, room_instance) -> RoomReportRepr:
         review_aggregate = cls.get_review_aggregate(room_instance)
         booking_aggregate = cls.get_booking_aggregate(room_instance)
         complete_report = {
@@ -42,7 +44,7 @@ class RoomReportGenerate:
         return room_report
 
     @staticmethod
-    def get_review_aggregate(room_instance):
+    def get_review_aggregate(room_instance: Room) -> dict:
         review_aggregate = room_instance.review.aggregate(
             avg_rate=models.Avg("rate"),
             count_rate=models.Count("id"),
@@ -50,7 +52,7 @@ class RoomReportGenerate:
         return review_aggregate
 
     @staticmethod
-    def get_booking_aggregate(room_instance):
+    def get_booking_aggregate(room_instance) -> dict:
         booking_aggregate = room_instance.booking_set.aggregate(
             amount_of_booking=models.Count("id"),
         )
@@ -83,7 +85,7 @@ class RoomsReport:
 
 class RoomsGenerate:
     @classmethod
-    def generate_rooms_report(cls, rooms):
+    def generate_rooms_report(cls, rooms: models.QuerySet) -> RoomsReport:
         review_aggregate = cls.get_review_aggregate(rooms)
         rooms_aggregate = rooms.aggregate(room_amount=models.Count("id"))
         complete_report = {
@@ -95,7 +97,7 @@ class RoomsGenerate:
         return room_report
 
     @staticmethod
-    def get_review_aggregate(room_instance):
+    def get_review_aggregate(room_instance: models.QuerySet) -> dict:
         review_aggregate = room_instance.prefetch_related("review").aggregate(
             avg_rate=models.Avg("review__rate"),
             count_rate=models.Count("review__id"),

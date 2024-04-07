@@ -18,7 +18,7 @@ class BookingModelSerializer(serializers.ModelSerializer):
             "duration",
         ]
 
-    def validate(self, data):
+    def validate(self, data: dict) -> dict:
         room = data.get("room")
         is_available = room.booking_set.filter(
             models.Q(
@@ -38,5 +38,5 @@ class BookingModelSerializer(serializers.ModelSerializer):
         return data
 
     @transaction.atomic
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> Booking:
         return Booking.objects.create(**validated_data)

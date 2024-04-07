@@ -17,7 +17,7 @@ class PermissionHandler(permissions.BasePermission):
     - Returns `True` if permission is granted, otherwise `False`.
     """
 
-    def has_permission(self, request, view):
+    def has_permission(self, request, view) -> bool:
         if view.action == "list":
             return True
         elif view.action == "create":
@@ -26,7 +26,7 @@ class PermissionHandler(permissions.BasePermission):
             return request.user.is_staff
         return False
 
-    def has_object_permission(self, request, view, obj):
+    def has_object_permission(self, request, view, obj) -> bool:
         if not request.user.is_authenticated:
             return False
         if request.user.is_staff:
@@ -44,7 +44,7 @@ class IsAdminOrReadOnly(permissions.BasePermission):
     (POST, PUT, PATCH, DELETE) if the user is authenticated, has staff privileges, and is not anonymous.
     """
 
-    def has_permission(self, request, view):
+    def has_permission(self, request, view) -> bool:
         return bool(
             request.method in permissions.SAFE_METHODS
             or request.user
