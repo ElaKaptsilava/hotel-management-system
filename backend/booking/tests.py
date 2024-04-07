@@ -17,6 +17,7 @@ class BookingApiTestCase(APITestCase):
         self.create_admin = User.objects.create_superuser(
             username="root", password="1234", email="root@gmail.com"
         )
+
         self.create_user = User.objects.create_user(
             username="user", password="1234", email="root@gmail.com"
         )
@@ -39,6 +40,7 @@ class BookingApiTestCase(APITestCase):
             check_out="2023-12-13",
             room=self.create_room,
         )
+
 
         self.bookings_list_url = reverse("bookings-management:bookings-list")
         self.rooms_detail_url = reverse(
@@ -78,7 +80,7 @@ class BookingApiTestCase(APITestCase):
         self.assertTrue(get_room.is_available_status)
 
     def test_admin_can_destroy_booking_successful(
-        self,
+            self,
     ):
         self.client.login(username="root", password="1234")
         create_token = self.client.post(

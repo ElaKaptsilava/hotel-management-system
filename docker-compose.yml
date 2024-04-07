@@ -1,4 +1,4 @@
-version: '2'
+version: '3.9'
 
 services:
   nginx:
@@ -30,6 +30,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_PORT: 5432
+    depends_on:
+      db:
+        condition: service_healthy
   worker:
     restart: unless-stopped
     build:
@@ -67,6 +70,11 @@ services:
       POSTGRES_PASSWORD: postgres
     expose:
       - 5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 30s
+      retries: 6
 
 volumes:
   static_volume: {}

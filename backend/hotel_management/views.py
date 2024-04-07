@@ -20,6 +20,7 @@ class HotelModelViewSet(viewsets.ModelViewSet):
     filterset_fields = ["id", "name"]
 
 
+
 class RoomModelViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.with_booking()
     serializer_class = RoomModelSerializer
