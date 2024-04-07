@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.db.models import QuerySet
@@ -15,6 +16,7 @@ class ModelsManager(models.Model):
 
 
 class Hotel(ModelsManager):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=250, help_text='Enter the name of the hotel')
     location = models.OneToOneField("Location", on_delete=models.CASCADE)
     description = models.TextField(help_text='Enter the description of the hotel')

@@ -1,4 +1,4 @@
-django==5.0
+django
 django-redis
 djangorestframework~=3.14.0
 djangorestframework-simplejwt==5.3.1
@@ -10,6 +10,7 @@ django-filter==23.5
 django-environ
 django-phonenumber-field[phonenumberslite]
 phone-iso3166
+factory_boy
 
 celery[redis]~=5.3.6
 
