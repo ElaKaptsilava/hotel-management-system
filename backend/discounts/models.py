@@ -1,6 +1,7 @@
 import datetime
 
 from django.db import models
+from django.utils import timezone
 
 from hotel_management import models as hotel_models
 
@@ -17,8 +18,8 @@ class Discount(ModelsManager):
     percentage_value = models.PositiveIntegerField(null=True, blank=True, help_text="Discount percentage value")
     rooms = models.ManyToManyField(hotel_models.Room, default=list, help_text="Discount rooms")
 
-    generated = models.DateField(default=datetime.date.today())
-    expiration_date = models.DateField(default=datetime.date.today())
+    generated = models.DateField(default=timezone.now)
+    expiration_date = models.DateField(default=timezone.now)
 
     def __str__(self) -> str:
         if self.percentage_value:

@@ -1,10 +1,10 @@
 import factory
 
-from booking.models import Booking
+from .models import Booking
 from hotel_management.factories import UserFactory, RoomFactory
 
 
-class BookingFactory(factory.Factory):
+class BookingFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Booking
 

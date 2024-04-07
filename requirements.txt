@@ -11,6 +11,7 @@ django-environ
 django-phonenumber-field[phonenumberslite]
 phone-iso3166
 factory_boy
+faker
 
 celery[redis]~=5.3.6
 
