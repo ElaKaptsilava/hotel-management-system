@@ -8,6 +8,7 @@ class BookingFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Booking
 
+    pk = factory.Sequence(lambda n: n)
     user = factory.SubFactory(UserFactory)
     check_in = factory.Faker('date')
     check_out = factory.Faker('date')

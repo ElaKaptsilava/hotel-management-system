@@ -21,6 +21,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
 
+    pk = factory.Sequence(lambda n: n)
     username = factory.Faker('user_name')
     email = factory.Faker('email')
     password = factory.PostGenerationMethodCall('set_password', 'password123')
@@ -30,6 +31,7 @@ class LocationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Location
 
+    pk = factory.Sequence(lambda n: n)
     city = factory.Faker('city')
     country = factory.Faker('country')
     street = factory.Faker('street_name')
@@ -40,6 +42,7 @@ class HotelFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Hotel
 
+    pk = factory.Sequence(lambda n: n)
     user = factory.SubFactory(UserFactory)
     name = factory.Faker('name')
     description = factory.Faker('paragraph')
