@@ -23,8 +23,8 @@ class Discount(ModelsManager):
 
     def __str__(self) -> str:
         if self.percentage_value:
-            return f"{self.percentage_value}%"
-        return f"{self.value}$"
+            return f"{self.percentage_value} %"
+        return f"{self.value} $"
 
     def __repr__(self) -> str:
         class_name = type(self).__name__

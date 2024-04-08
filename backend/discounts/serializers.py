@@ -1,5 +1,6 @@
 from django.db import transaction
 
+from hotel_management.serializers import RoomModelSerializer
 from .models import Discount
 
 from rest_framework import serializers
@@ -7,9 +8,11 @@ from .discount_counter import DiscountCounter
 
 
 class DiscountModelSerializer(serializers.ModelSerializer):
+    rooms = RoomModelSerializer(many=True)
+
     class Meta:
         model = Discount
-        fields = "__all__"
+        fields = ['id', 'value', 'percentage_value', 'rooms']
 
     @transaction.atomic
     def create(self, validated_data: dict) -> Discount:

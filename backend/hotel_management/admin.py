@@ -4,7 +4,7 @@ from .models import Hotel, Location, Room
 
 
 @admin.register(Hotel)
-class HotelManager(admin.ModelAdmin):
+class AccommodationManager(admin.ModelAdmin):
     list_display = ("name", "location")
     list_filter = ("location",)
     sortable_by = "name"
