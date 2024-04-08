@@ -6,6 +6,7 @@ from .models import Booking
 
 
 class BookingModelSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Booking
         fields = [
@@ -16,6 +17,7 @@ class BookingModelSerializer(serializers.ModelSerializer):
             "check_out",
             "room",
             "duration",
+            "phone",
         ]
 
     def validate(self, data: dict) -> dict:

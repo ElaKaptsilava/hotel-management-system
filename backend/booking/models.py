@@ -40,10 +40,10 @@ class Booking(models.Model):
 
     def __repr__(self) -> str:
         class_name = type(self).__name__
-        return f"{class_name}(user={self.user.name!r}, room={self.room!r})"
+        return f"{class_name}(user={self.user.username!r}, room={self.room!r})"
 
     @property
     def is_active_status(self) -> bool:
         if hasattr(self, "is_active"):
             return self.is_active
-        return True if self.check_in == timezone.now().date() else False
+        return True if self.check_in <= timezone.now().date() <= self.check_out else False

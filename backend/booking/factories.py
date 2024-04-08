@@ -18,4 +18,3 @@ class BookingFactory(factory.django.DjangoModelFactory):
         lambda self: self.check_in + datetime.timedelta(days=random.randint(1, 31))
     )
     room = factory.SubFactory(RoomFactory)
-    phone = factory.Faker('phone_number')

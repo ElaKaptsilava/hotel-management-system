@@ -52,8 +52,8 @@ urlpatterns = [
     path(
         "bookings-management/",
         include(
-            (booking_router.urls, "bookings-management"),
-            namespace="bookings-management",
+            (booking_router.urls, "booking-management"),
+            namespace="booking-management",
         ),
     ),
     path(
