@@ -17,9 +17,9 @@ class ModelsManager(models.Model):
 
 class Hotel(ModelsManager):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=250, help_text='Enter the name of the hotel')
+    name = models.CharField(max_length=250, help_text="Enter the name of the hotel")
     location = models.OneToOneField("Location", on_delete=models.CASCADE)
-    description = models.TextField(help_text='Enter the description of the hotel')
+    description = models.TextField(help_text="Enter the description of the hotel")
     review = GenericRelation(AbstractReview)
 
     def __str__(self) -> str:
@@ -63,7 +63,11 @@ class Room(ModelsManager):
     room_number = models.IntegerField(unique=True)
     prise_per_day = models.DecimalField(max_digits=5, decimal_places=2)
     phone_number = PhoneNumberField(blank=True)
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, help_text='Select the hotel to which this room belongs.')
+    hotel = models.ForeignKey(
+        Hotel,
+        on_delete=models.CASCADE,
+        help_text="Select the hotel to which this room belongs.",
+    )
     review = GenericRelation(AbstractReview)
 
     objects = RoomQuerySet.as_manager()
@@ -79,6 +83,10 @@ class Room(ModelsManager):
     def is_available_status(self) -> bool:
         if hasattr(self, "is_available"):
             return self.is_available
-        return False if self.booking_set.filter(
-            check_in__lte=timezone.now(), check_out__gt=timezone.now()
-        ).exists() else True
+        return (
+            False
+            if self.booking_set.filter(
+                check_in__lte=timezone.now(), check_out__gt=timezone.now()
+            ).exists()
+            else True
+        )

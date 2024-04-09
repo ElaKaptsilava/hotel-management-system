@@ -70,7 +70,9 @@ class RoomReportApiView(mixins.ListModelMixin, GenericViewSet):
 
     @action(methods=["GET"], detail=False, url_name="page-reports")
     def get_page_room_reports(self, request):
-        rooms_instance = self.paginate_queryset(self.get_queryset().order_by('room_number'))
+        rooms_instance = self.paginate_queryset(
+            self.get_queryset().order_by("room_number")
+        )
         rooms_queryset = Room.objects.filter(
             id__in=[room.id for room in rooms_instance]
         )

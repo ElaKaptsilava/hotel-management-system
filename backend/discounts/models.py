@@ -14,9 +14,15 @@ class ModelsManager(models.Model):
 
 
 class Discount(ModelsManager):
-    value = models.PositiveIntegerField(null=True, blank=True, help_text="Discount value")
-    percentage_value = models.PositiveIntegerField(null=True, blank=True, help_text="Discount percentage value")
-    rooms = models.ManyToManyField(hotel_models.Room, default=list, help_text="Discount rooms")
+    value = models.PositiveIntegerField(
+        null=True, blank=True, help_text="Discount value"
+    )
+    percentage_value = models.PositiveIntegerField(
+        null=True, blank=True, help_text="Discount percentage value"
+    )
+    rooms = models.ManyToManyField(
+        hotel_models.Room, default=list, help_text="Discount rooms"
+    )
 
     generated = models.DateField(default=timezone.now)
     expiration_date = models.DateField(default=timezone.now)

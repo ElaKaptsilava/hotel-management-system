@@ -23,10 +23,23 @@ class BookingQuerySet(QuerySet):
 
 
 class Booking(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, help_text='Select the user who is making the booking.')
-    check_in = models.DateField(default=timezone.now, help_text='Specify the check-in date.')
-    check_out = models.DateField(default=timezone.now, help_text='Specify the check-out date.')
-    room = models.ForeignKey(hotel_models.Room, on_delete=models.CASCADE, null=True, help_text='Specify the room.')
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        help_text="Select the user who is making the booking.",
+    )
+    check_in = models.DateField(
+        default=timezone.now, help_text="Specify the check-in date."
+    )
+    check_out = models.DateField(
+        default=timezone.now, help_text="Specify the check-out date."
+    )
+    room = models.ForeignKey(
+        hotel_models.Room,
+        on_delete=models.CASCADE,
+        null=True,
+        help_text="Specify the room.",
+    )
     phone = PhoneNumberField(null=True, blank=True)
     duration = models.GeneratedField(
         expression=models.F("check_out") - models.F("check_in"),
@@ -46,4 +59,6 @@ class Booking(models.Model):
     def is_active_status(self) -> bool:
         if hasattr(self, "is_active"):
             return self.is_active
-        return True if self.check_in <= timezone.now().date() <= self.check_out else False
+        return (
+            True if self.check_in <= timezone.now().date() <= self.check_out else False
+        )

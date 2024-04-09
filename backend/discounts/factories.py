@@ -10,10 +10,12 @@ class DiscountFactory(factory.django.DjangoModelFactory):
         model = Discount
 
     pk = factory.Sequence(lambda n: n)
-    value = factory.Faker('random_number', digits=3)
-    percentage_value = factory.Faker('random_number', digits=2)
+    value = factory.Faker("random_number", digits=3)
+    percentage_value = factory.Faker("random_number", digits=2)
     generated = timezone.now()
-    expiration_date = factory.Faker('future_date', end_date='+30d', tzinfo=timezone.get_current_timezone())
+    expiration_date = factory.Faker(
+        "future_date", end_date="+30d", tzinfo=timezone.get_current_timezone()
+    )
 
     @classmethod
     def rooms(cls, create, **kwargs):

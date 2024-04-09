@@ -12,7 +12,7 @@ class DiscountModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Discount
-        fields = ['id', 'value', 'percentage_value', 'rooms']
+        fields = ["id", "value", "percentage_value", "rooms"]
 
     @transaction.atomic
     def create(self, validated_data: dict) -> Discount:

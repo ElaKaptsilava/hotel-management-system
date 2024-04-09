@@ -65,7 +65,9 @@ class BookingReportGenerate:
         return aggregate_queryset
 
     @staticmethod
-    def find_the_most_popular_countries_for_booking(booking_queryset: QuerySet) -> str | None:
+    def find_the_most_popular_countries_for_booking(
+        booking_queryset: QuerySet,
+    ) -> str | None:
         phone_queryset = booking_queryset.filter(phone__isnull=False).values_list(
             "phone"
         )

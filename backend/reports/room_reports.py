@@ -63,9 +63,9 @@ class RoomReportGenerate:
         )
         booking_aggregate.update(
             {
-                "next_arrival": next_arrival.check_in
-                if next_arrival is not None
-                else None
+                "next_arrival": (
+                    next_arrival.check_in if next_arrival is not None else None
+                )
             }
         )
         return booking_aggregate

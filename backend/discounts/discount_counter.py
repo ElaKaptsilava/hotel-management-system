@@ -1,6 +1,7 @@
 """
 Implementation of discounts and promotions functionality
 """
+
 from rest_framework import serializers
 
 from hotel_management.models import Room
