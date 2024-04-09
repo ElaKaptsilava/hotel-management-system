@@ -1,8 +1,6 @@
 import factory
-from django.contrib.contenttypes.models import ContentType
 
-from hotel_management.factories import UserFactory, HotelFactory
-from hotel_management.models import Hotel
+from hotel_management.factories import UserFactory
 from reviews.models import AbstractReview
 
 

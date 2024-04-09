@@ -68,9 +68,9 @@ class RoomReportApiView(mixins.ListModelMixin, GenericViewSet):
         serializer = RoomReportSerializer(data=room_report.__dict__)
         return Response(serializer.initial_data, status=status.HTTP_201_CREATED)
 
-    @action(methods=["GET"], detail=False, url_name="rooms-reports")
+    @action(methods=["GET"], detail=False, url_name="page-reports")
     def get_page_room_reports(self, request):
-        rooms_instance = self.paginate_queryset(self.get_queryset())
+        rooms_instance = self.paginate_queryset(self.get_queryset().order_by('room_number'))
         rooms_queryset = Room.objects.filter(
             id__in=[room.id for room in rooms_instance]
         )
