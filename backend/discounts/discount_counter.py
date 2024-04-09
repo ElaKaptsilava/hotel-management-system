@@ -3,6 +3,7 @@ Implementation of discounts and promotions functionality
 """
 
 from rest_framework import serializers
+from rest_framework.exceptions import APIException
 
 from hotel_management.models import Room
 
@@ -38,5 +39,5 @@ class DiscountCounter:
     def change_price_per_day_with_discount(cls, discount: float, room: Room) -> None:
         room.prise_per_day -= discount
         if room.prise_per_day < 0:
-            raise serializers.ValidationError("Price cannot be less than 0")
+            raise APIException("Price cannot be less than 0")
         room.save()

@@ -38,7 +38,7 @@ class BookingApiTestCase(APITestCase):
 
     def test_booking_is_not_available(self):
         self.client.login(username=self.admin.username, password="kjbafg873ghdsas9881")
-        booking = BookingFactory.create(
+        BookingFactory.create(
             user=self.admin,
             check_in=datetime.date(year=2024, month=4, day=7),
             room=self.room,
@@ -54,5 +54,5 @@ class BookingApiTestCase(APITestCase):
             f"This room is occupied from {self.build_booking.check_in} "
             f"to {self.build_booking.check_out}.You should choose another date"
         )
-        print(expected_message)
+
         self.assertEqual(post_booking.data["detail"], expected_message)

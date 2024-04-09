@@ -1,0 +1,15 @@
+[report]
+omit =
+ */environment/*
+ */migrations/*
+  Amazon_customers/*
+  manage.py
+  */__init__.py
+  */settings.py
+  */celery.py
+  */admin.py
+  */apps.py
+  */tests.py
+  */urls.py
+  */api.py
+

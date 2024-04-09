@@ -105,7 +105,7 @@ class ReportsApiTestCase(APITestCase):
         self.client.login(username=self.admin.username, password="lxm712HJKHK")
 
         for _ in range(30):
-            room1 = RoomFactory.create(hotel=self.hotel1)
+            RoomFactory.create(hotel=self.hotel1)
 
         get_report = self.client.get(
             reverse("reports:rooms-page-reports"), format="json"

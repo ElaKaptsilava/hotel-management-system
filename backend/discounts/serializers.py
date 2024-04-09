@@ -1,6 +1,6 @@
 from django.db import transaction
 
-from hotel_management.serializers import RoomModelSerializer
+from hotel_management.models import Room
 from .models import Discount
 
 from rest_framework import serializers
@@ -8,7 +8,7 @@ from .discount_counter import DiscountCounter
 
 
 class DiscountModelSerializer(serializers.ModelSerializer):
-    rooms = RoomModelSerializer(many=True)
+    rooms = serializers.PrimaryKeyRelatedField(many=True, queryset=Room.objects.all())
 
     class Meta:
         model = Discount
