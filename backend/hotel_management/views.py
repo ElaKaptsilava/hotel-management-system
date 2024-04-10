@@ -5,8 +5,11 @@ from project_permissions.permissions import IsAdminOrReadOnly
 
 from .filters import RoomFilters
 from .models import Hotel, Location, Room
-from .serializers import (HotelModelSerializer, LocationModelSerializer,
-                          RoomModelSerializer)
+from .serializers import (
+    HotelModelSerializer,
+    LocationModelSerializer,
+    RoomModelSerializer,
+)
 
 
 class HotelModelViewSet(viewsets.ModelViewSet):

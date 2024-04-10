@@ -5,8 +5,12 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from booking.factories import BookingFactory
-from hotel_management.factories import (HotelFactory, LocationFactory,
-                                        RoomFactory, UserFactory)
+from hotel_management.factories import (
+    HotelFactory,
+    LocationFactory,
+    RoomFactory,
+    UserFactory,
+)
 
 
 class HotelManagementAPITestCase(APITestCase):

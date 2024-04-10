@@ -2,8 +2,12 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from hotel_management.factories import (HotelFactory, LocationFactory,
-                                        RoomFactory, UserFactory)
+from hotel_management.factories import (
+    HotelFactory,
+    LocationFactory,
+    RoomFactory,
+    UserFactory,
+)
 from hotel_management.models import Room
 
 
@@ -21,8 +25,9 @@ class DiscountCounterAPITestCase(APITestCase):
         self.client.login(username=self.admin.username, password="12345678dsad")
         discount_dict = {"value": self.value, "rooms": [self.room.id]}
 
-        post_discount = self.client.post(reverse('discounts-management:discounts-list'),
-                                         discount_dict, format='json')
+        post_discount = self.client.post(
+            reverse("discounts-management:discounts-list"), discount_dict, format="json"
+        )
         get_room = Room.objects.get(id=self.room.id)
 
         self.assertEqual(post_discount.status_code, status.HTTP_201_CREATED)
@@ -32,8 +37,9 @@ class DiscountCounterAPITestCase(APITestCase):
         self.client.login(username=self.admin.username, password="12345678dsad")
         discount_dict = {"percentage_value": self.value, "rooms": [self.room.id]}
 
-        post_discount = self.client.post(reverse('discounts-management:discounts-list'),
-                                         discount_dict, format='json')
+        post_discount = self.client.post(
+            reverse("discounts-management:discounts-list"), discount_dict, format="json"
+        )
         get_room = Room.objects.get(id=self.room.id)
         expected = round(self.room.prise_per_day * (100 - self.value) / 100, 2)
 
@@ -44,8 +50,11 @@ class DiscountCounterAPITestCase(APITestCase):
         self.client.login(username=self.admin.username, password="12345678dsad")
         discount_dict = {"value": self.value, "rooms": [self.room1.id]}
 
-        post_discount = self.client.post(reverse('discounts-management:discounts-list'),
-                                         discount_dict, format='json')
+        post_discount = self.client.post(
+            reverse("discounts-management:discounts-list"), discount_dict, format="json"
+        )
 
-        self.assertEqual(post_discount.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
-        self.assertEqual(post_discount.data['detail'], 'Price cannot be less than 0')
+        self.assertEqual(
+            post_discount.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+        self.assertEqual(post_discount.data["detail"], "Price cannot be less than 0")

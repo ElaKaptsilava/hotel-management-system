@@ -13,8 +13,12 @@ from .filters import HotelFilters
 from .hotel_reports import HotelReportGenerate
 from .paginations import RoomResultsSetPagination
 from .room_reports import RoomReportGenerate, RoomsGenerate
-from .serializers import (HotelReportSerializer, RoomInitialModelSerializer,
-                          RoomReportSerializer, RoomsPageReportSerializer)
+from .serializers import (
+    HotelReportSerializer,
+    RoomInitialModelSerializer,
+    RoomReportSerializer,
+    RoomsPageReportSerializer,
+)
 
 
 class HotelReportApiView(
