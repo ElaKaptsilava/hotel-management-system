@@ -11,12 +11,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import datetime
-from pathlib import Path
 import os
+from pathlib import Path
 
 import sentry_sdk
-from sentry_sdk.crons import monitor
 from django.core.management.utils import get_random_secret_key
+from sentry_sdk.crons import monitor
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

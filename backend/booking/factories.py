@@ -3,8 +3,9 @@ import random
 
 import factory
 
+from hotel_management.factories import RoomFactory, UserFactory
+
 from .models import Booking
-from hotel_management.factories import UserFactory, RoomFactory
 
 
 class BookingFactory(factory.django.DjangoModelFactory):

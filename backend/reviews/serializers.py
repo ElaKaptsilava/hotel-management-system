@@ -1,6 +1,6 @@
-from .models import AbstractReview
-
 from rest_framework import serializers
+
+from .models import AbstractReview
 
 
 class AbstractReviewModelSerializer(serializers.ModelSerializer):

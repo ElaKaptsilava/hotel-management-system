@@ -1,8 +1,9 @@
 from rest_framework import viewsets
 
+from project_permissions.permissions import PermissionHandler
+
 from .models import Booking
 from .serializers import BookingModelSerializer
-from project_permissions.permissions import PermissionHandler
 
 
 class BookingModelViewSet(viewsets.ModelViewSet):

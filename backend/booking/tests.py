@@ -1,15 +1,13 @@
+import datetime
+
+from django.forms import model_to_dict
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-import datetime
-from django.forms import model_to_dict
 
-from hotel_management.factories import (
-    RoomFactory,
-    LocationFactory,
-    HotelFactory,
-    UserFactory,
-)
+from hotel_management.factories import (HotelFactory, LocationFactory,
+                                        RoomFactory, UserFactory)
+
 from .factories import BookingFactory
 
 

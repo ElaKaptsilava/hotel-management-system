@@ -1,15 +1,12 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets
 
 from project_permissions.permissions import IsAdminOrReadOnly
-from rest_framework import viewsets
 
 from .filters import RoomFilters
 from .models import Hotel, Location, Room
-from .serializers import (
-    HotelModelSerializer,
-    LocationModelSerializer,
-    RoomModelSerializer,
-)
+from .serializers import (HotelModelSerializer, LocationModelSerializer,
+                          RoomModelSerializer)
 
 
 class HotelModelViewSet(viewsets.ModelViewSet):

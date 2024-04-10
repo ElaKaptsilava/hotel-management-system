@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 
 from project_permissions.permissions import IsAdminOrReadOnly
+
 from .models import Discount
 from .serializers import DiscountModelSerializer
 

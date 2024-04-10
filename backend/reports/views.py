@@ -1,23 +1,20 @@
 from django.db import transaction
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import permissions, status, mixins
+from rest_framework import mixins, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from hotel_management.models import Hotel, Room
 from hotel_management.serializers import HotelModelSerializer
+
 from .booking_reports import BookingReportGenerate
-from .hotel_reports import HotelReportGenerate
-from .room_reports import RoomReportGenerate, RoomsGenerate
-from .serializers import (
-    HotelReportSerializer,
-    RoomInitialModelSerializer,
-    RoomReportSerializer,
-    RoomsPageReportSerializer,
-)
-from .paginations import RoomResultsSetPagination
 from .filters import HotelFilters
+from .hotel_reports import HotelReportGenerate
+from .paginations import RoomResultsSetPagination
+from .room_reports import RoomReportGenerate, RoomsGenerate
+from .serializers import (HotelReportSerializer, RoomInitialModelSerializer,
+                          RoomReportSerializer, RoomsPageReportSerializer)
 
 
 class HotelReportApiView(

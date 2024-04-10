@@ -29,3 +29,4 @@ coverage
 factory_boy
 faker~=24.7.1
 conventional-pre-commit
+isort
