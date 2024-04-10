@@ -2,7 +2,6 @@
 Implementation of discounts and promotions functionality
 """
 
-from rest_framework import serializers
 from rest_framework.exceptions import APIException
 
 from hotel_management.models import Room

@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from django.db import models
 from django.utils import timezone
 
-from hotel_management.models import Hotel, Room
+from hotel_management.models import Hotel
 
 
 @dataclass

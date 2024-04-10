@@ -31,3 +31,4 @@ faker~=24.7.1
 conventional-pre-commit
 isort
 bandit
+ruff
