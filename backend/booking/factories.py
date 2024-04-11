@@ -2,7 +2,6 @@ import datetime
 import secrets
 
 import factory
-
 from hotel_management.factories import RoomFactory, UserFactory
 
 from .models import Booking

@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from booking.serializers import BookingModelSerializer
+from rest_framework import serializers
 
 from .models import Hotel, Location, Room
 

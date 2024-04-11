@@ -1,12 +1,9 @@
 import datetime
 
-from django.contrib.contenttypes.models import ContentType
-from django.urls import reverse
-from rest_framework import status
-from rest_framework.test import APITestCase
-
 from booking.factories import BookingFactory
 from booking.models import Booking
+from django.contrib.contenttypes.models import ContentType
+from django.urls import reverse
 from hotel_management.factories import (
     HotelFactory,
     LocationFactory,
@@ -15,6 +12,8 @@ from hotel_management.factories import (
 )
 from hotel_management.models import Hotel, Room
 from reports.paginations import RoomResultsSetPagination
+from rest_framework import status
+from rest_framework.test import APITestCase
 from reviews.factories import AbstractReviewFactory
 
 

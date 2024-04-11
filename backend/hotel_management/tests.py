@@ -1,16 +1,15 @@
 import datetime
 
-from django.urls import reverse
-from rest_framework import status
-from rest_framework.test import APITestCase
-
 from booking.factories import BookingFactory
+from django.urls import reverse
 from hotel_management.factories import (
     HotelFactory,
     LocationFactory,
     RoomFactory,
     UserFactory,
 )
+from rest_framework import status
+from rest_framework.test import APITestCase
 
 
 class HotelManagementAPITestCase(APITestCase):

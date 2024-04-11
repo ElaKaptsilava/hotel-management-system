@@ -3,13 +3,12 @@ from collections import Counter
 from dataclasses import dataclass
 from datetime import date
 
+from booking.models import Booking
 from django.db import models
 from django.db.models import QuerySet
 from django.utils import duration, timezone
-from phone_iso3166.country import phone_country
-
-from booking.models import Booking
 from hotel_management.models import Hotel
+from phone_iso3166.country import phone_country
 
 
 @dataclass

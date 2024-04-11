@@ -1,5 +1,4 @@
 import django_filters
-
 from hotel_management.models import Hotel
 
 

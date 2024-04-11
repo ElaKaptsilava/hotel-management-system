@@ -1,6 +1,5 @@
-from rest_framework.routers import DefaultRouter
-
 from reports.views import HotelReportApiView, RoomReportApiView
+from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 

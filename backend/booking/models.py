@@ -2,9 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import QuerySet
 from django.utils import timezone
-from phonenumber_field.modelfields import PhoneNumberField
-
 from hotel_management import models as hotel_models
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class BookingQuerySet(QuerySet):

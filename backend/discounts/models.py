@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils import timezone
-
 from hotel_management import models as hotel_models
 
 

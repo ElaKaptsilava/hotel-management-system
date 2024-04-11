@@ -4,7 +4,6 @@ from django.db import models
 from django.db.models import QuerySet
 from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
-
 from reviews.models import AbstractReview
 
 

@@ -2,9 +2,8 @@
 Implementation of discounts and promotions functionality
 """
 
-from rest_framework.exceptions import APIException
-
 from hotel_management.models import Room
+from rest_framework.exceptions import APIException
 
 
 class DiscountCounter:

@@ -1,5 +1,4 @@
 import factory
-
 from hotel_management.factories import UserFactory
 from reviews.models import AbstractReview
 

@@ -15,6 +15,8 @@ Including another URLconf
 """
 
 import debug_toolbar
+from booking.api import router as booking_router
+from discounts.api import router as discounts_router
 from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import (
@@ -22,12 +24,9 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-
-from booking.api import router as booking_router
-from discounts.api import router as discounts_router
 from hotel_management.api import router as hotel_router
 from reports.api import router as reports_router
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from reviews.api import router as reviews_router
 
 urlpatterns = [
