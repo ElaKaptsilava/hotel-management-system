@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "hotel-management-system"
+version = "0.1.0"
+description = ""
+authors = ["Lizaveta Kaptsilava <126101406+ElaKaptsilava@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+Django = "^5.0.4"
+celery = "^5.3.6"
+sentry-sdk = "^1.45.0"
+psycopg2 = "^2.9.9"
+django-debug-toolbar = "^4.3.0"
+djangorestframework = "^3.15.1"
+django-filter = "^24.2"
+django-phonenumber-field = {extras = ["phonenumberslite"], version = "^7.3.0"}
+drf-spectacular = "^0.27.2"
+djangorestframework-simplejwt = "^5.3.1"
+django-extensions = "^3.2.3"
+phone-iso3166 = "^0.4.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

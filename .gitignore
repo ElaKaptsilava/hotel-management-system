@@ -4,4 +4,4 @@ __pycache__
 .flake8
 .pre-commit-config.yaml
 black_conf.toml
-/backend/backend/.env
+/.env

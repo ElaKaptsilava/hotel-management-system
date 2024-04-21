@@ -20,10 +20,14 @@ class PermissionHandler(permissions.BasePermission):
     def has_permission(self, request, view) -> bool:
         if view.action == "list":
             return True
-        elif view.action == "create":
+        elif view.action in [
+            "retrieve",
+            "update",
+            "partial_update",
+            "destroy",
+            "create",
+        ]:
             return request.user.is_authenticated
-        elif view.action in ["retrieve", "update", "partial_update", "destroy"]:
-            return request.user.is_staff
         return False
 
     def has_object_permission(self, request, view, obj) -> bool:
@@ -31,8 +35,10 @@ class PermissionHandler(permissions.BasePermission):
             return False
         if request.user.is_staff:
             return True
-        if view.action == ["update", "partial_update", "retrieve", "destroy"]:
-            return obj == request.user
+        if view.action in ["update", "partial_update", "retrieve", "destroy"]:
+            print(obj.user)
+            print(request.user)
+            return obj.user == request.user or request.user.is_staff
         return False
 
 
