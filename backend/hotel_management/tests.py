@@ -21,7 +21,7 @@ class HotelManagementAPITestCase(APITestCase):
         self.room = RoomFactory.create(hotel=self.hotel)
 
     def test_room_is_available(self):
-        self.client.login(username=self.user.username, password="12345678dsad")
+        self.client.force_login(self.user)
 
         get_room = self.client.get(
             reverse("hotel-management:rooms-detail", kwargs={"pk": self.room.pk}),
@@ -32,7 +32,7 @@ class HotelManagementAPITestCase(APITestCase):
         self.assertEqual(get_room.data["is_available_status"], True)
 
     def test_room_unavailable_after_booking(self):
-        self.client.login(username=self.user.username, password="12345678dsad")
+        self.client.force_login(self.user)
 
         booking = BookingFactory.create(
             check_in=datetime.date(year=2024, month=4, day=6),

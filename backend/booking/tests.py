@@ -28,7 +28,7 @@ class BookingApiTestCase(APITestCase):
         )
 
     def test_booking_status_is_active(self):
-        self.client.login(username=self.admin.username, password="kjbafg873ghdsas9881")
+        self.client.force_login(self.admin)
 
         post_booking = self.client.post(
             reverse("booking-management:bookings-list"),
@@ -40,12 +40,12 @@ class BookingApiTestCase(APITestCase):
         self.assertTrue(post_booking.data["is_active_status"])
 
     def test_booking_is_not_available(self):
-        self.client.login(username=self.admin.username, password="kjbafg873ghdsas9881")
+        self.client.force_login(self.admin)
 
         existing_booking_check_in = datetime.date.today()
         existing_booking_check_out = existing_booking_check_in + datetime.timedelta(
             days=3
-        )  # Adjust as needed
+        )
 
         BookingFactory.create(
             user=self.admin,
@@ -68,7 +68,7 @@ class BookingApiTestCase(APITestCase):
         self.assertEqual(post_booking.data["detail"], expected_message)
 
     def test_update_booking_room_as_admin(self):
-        self.client.login(username=self.admin.username, password="kjbafg873ghdsas9881")
+        self.client.force_login(self.admin)
         booking = BookingFactory.create(
             user=self.admin,
             room=self.room,
@@ -84,7 +84,7 @@ class BookingApiTestCase(APITestCase):
         self.assertEqual(put_booking.data["room"], self.room2.pk)
 
     def test_delete_booking_as_user_forbidden(self):
-        self.client.login(username=self.user.username, password="kjbafg873ghdsas9881")
+        self.client.force_login(self.user)
 
         booking = BookingFactory.create(
             user=self.admin,

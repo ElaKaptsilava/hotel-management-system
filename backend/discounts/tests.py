@@ -21,7 +21,7 @@ class DiscountCounterAPITestCase(APITestCase):
         self.value = 10
 
     def test_adjusting_room_price_after_applying_discount(self):
-        self.client.login(username=self.admin.username, password="12345678dsad")
+        self.client.force_login(self.admin)
         discount_dict = {"value": self.value, "rooms": [self.room.id]}
 
         post_discount = self.client.post(
@@ -33,7 +33,8 @@ class DiscountCounterAPITestCase(APITestCase):
         self.assertEqual(self.room.prise_per_day - self.value, get_room.prise_per_day)
 
     def test_adjusting_room_price_after_applying_discount_with_percentage(self):
-        self.client.login(username=self.admin.username, password="12345678dsad")
+        self.client.force_login(self.admin)
+
         discount_dict = {"percentage_value": self.value, "rooms": [self.room.id]}
 
         post_discount = self.client.post(
@@ -46,7 +47,7 @@ class DiscountCounterAPITestCase(APITestCase):
         self.assertEqual(expected, get_room.prise_per_day)
 
     def test_adjusting_room_price_after_applying_discount_value_greate_then_price(self):
-        self.client.login(username=self.admin.username, password="12345678dsad")
+        self.client.force_login(self.admin)
         discount_dict = {"value": self.value, "rooms": [self.room1.id]}
 
         post_discount = self.client.post(

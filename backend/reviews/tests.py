@@ -37,7 +37,7 @@ class ReviewTestCase(APITestCase):
         self.assertEqual(post_review.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_post_hotel_review_authorized_user(self):
-        self.client.login(username=self.admin.username, password="12345678dsad")
+        self.client.force_login(self.admin)
 
         request = {
             "user": self.admin.pk,

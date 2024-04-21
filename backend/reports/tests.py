@@ -59,7 +59,7 @@ class ReportsApiTestCase(APITestCase):
         return hotel_rates
 
     def test_hotel_report_generation(self):
-        self.client.login(username=self.admin.username, password="lxm712HJKHK")
+        self.client.force_login(self.admin)
 
         get_report = self.client.get(
             reverse("reports:hotels-hotel-reports", kwargs={"pk": self.hotel1.pk}),
@@ -77,7 +77,7 @@ class ReportsApiTestCase(APITestCase):
         )
 
     def test_booking_reports_generation(self):
-        self.client.login(username=self.admin.username, password="lxm712HJKHK")
+        self.client.force_login(self.admin)
 
         get_report = self.client.get(
             reverse("reports:hotels-booking-reports", kwargs={"pk": self.hotel1.pk}),
@@ -91,7 +91,7 @@ class ReportsApiTestCase(APITestCase):
         )
 
     def test_rooms_report_generation(self):
-        self.client.login(username=self.admin.username, password="lxm712HJKHK")
+        self.client.force_login(self.admin)
 
         get_report = self.client.get(
             reverse("reports:hotels-get-rooms", kwargs={"pk": self.hotel1.pk}),
@@ -101,7 +101,7 @@ class ReportsApiTestCase(APITestCase):
         self.assertEqual(get_report.status_code, status.HTTP_201_CREATED)
 
     def test_get_page_room_reports(self):
-        self.client.login(username=self.admin.username, password="lxm712HJKHK")
+        self.client.force_login(self.admin)
 
         for _ in range(30):
             RoomFactory.create(hotel=self.hotel1)
@@ -116,7 +116,7 @@ class ReportsApiTestCase(APITestCase):
         )
 
     def test_retrieve_room_report_generation(self):
-        self.client.login(username=self.admin.username, password="lxm712HJKHK")
+        self.client.force_login(self.admin)
 
         get_report = self.client.get(
             reverse("reports:rooms-detail", kwargs={"pk": self.room1.pk}), format="json"
@@ -125,7 +125,7 @@ class ReportsApiTestCase(APITestCase):
         self.assertEqual(get_report.status_code, status.HTTP_201_CREATED)
 
     def test_forbidden_report_generation(self):
-        self.client.login(username=self.user.username, password="cu7eq923GK")
+        self.client.force_login(self.user)
 
         get_report = self.client.get(
             reverse("reports:rooms-detail", kwargs={"pk": self.room1.pk}), format="json"
