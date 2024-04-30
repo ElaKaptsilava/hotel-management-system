@@ -185,8 +185,8 @@ CELERY_RESULT_BACKEND = os.environ.get("RESULT_BACKEND", "redis://localhost:6379
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
 STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
-# AWS_ACCESS_KEY_ID = decouple.config('AWS_ACCESS_KEY_ID')
-# AWS_SECRET_ACCESS_KEY = decouple.config('AWS_SECRET_ACCESS_KEY')
+AWS_ACCESS_KEY_ID = decouple.config("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = decouple.config("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = decouple.config("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_REGION_NAME = decouple.config("AWS_S3_REGION_NAME")
 
