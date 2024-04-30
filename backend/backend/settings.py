@@ -30,7 +30,11 @@ SECRET_KEY = get_random_secret_key()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", True)
 
-ALLOWED_HOSTS = ["127.0.0.1", "54.159.134.206"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "54.159.134.206",
+    "Hotel-management-system-env.eba-h2hbpmss.us-east-1.elasticbeanstalk.com",
+]
 
 if os.environ.get("ALLOWED_HOSTS") is not None:
     try:
@@ -202,7 +206,11 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
 }
 
-INTERNAL_IPS = ["127.0.0.1", "54.159.134.206"]
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "54.159.134.206",
+    "Hotel-management-system-env.eba-h2hbpmss.us-east-1.elasticbeanstalk.com",
+]
 
 
 def show_toolbar(request):
