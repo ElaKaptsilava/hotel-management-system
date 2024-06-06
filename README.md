@@ -4,9 +4,6 @@
 * [Setup](#setup)
 
 ## General info
-<details>
-<summary>Click here to see general information about <b>Project</b>!</summary>
-<b>Hotel management system</b>. The Hotel Management System is a comprehensive solution for managing hotel operations efficiently. It includes various apps, each serving a specific purpose, and leverages modern technologies for seamless functionality.
 
 Key Components:
 <ul>
